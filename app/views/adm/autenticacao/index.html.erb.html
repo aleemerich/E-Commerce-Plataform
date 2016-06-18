@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//PT-BR" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="pt-br">
+
+<head>
+
+<title>Área Administrativa</title>
+
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+
+
+<%= javascript_include_tag 'padrao' %>
+<%= stylesheet_link_tag 'screen' %>
+
+<body onload="mensagem(<%= flash[:notice].blank? ? 'false' : 'true' %>)">
+<div id="div_mensagem" align="center" style="position: absolute; z-index: 220; background: #CC0000; color: #FFFFFF; width: 95%; visibility: hidden">
+	<table style="width: 100%; border: 0px; background: #CC0000; margin: 0px 0px 0px 0px;">
+		<tr>
+			<td id="td_mensagem_aviso" align="center" style="width:95%; border:0px; background: #CC0000; vertical-align: middle; text-align: center; border-width: 0px; border-style: hidden;">
+			 <%= flash[:notice] %>
+			</td>
+			<td align="center" style="width:5%;border:0px;background: #CC0000;">
+				<img style="border:0px;background-color:transparent" src="/images/fechar3.jpg" onclick="mensagem(false)"/>
+			</td>
+		</tr>
+	</table>
+</div>
+
+<body>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<div align="center" style="width: 100%">
+              <div align="left" style="width: 400px">
+              <p align="center" style="font-size:x-large">Área de Administração</p><br />
+              <%= form_tag "/adm/", :method => :post %>
+                  <p>E-mail:<br />
+                  <input name="email" type="text" size="45" /></p>
+                  <p>Senha:<br />
+                  <input name="senha" type="password" size="45" /></p>
+                  <p align="center"><input type="submit" value="Enviar"  /></p>
+              </form>
+              </div>
+</div>
+
+</body>
+</html>

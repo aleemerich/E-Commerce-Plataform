@@ -1,0 +1,18 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//PT-BR"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+	  <meta http-equiv="Content-Type" content="text/html">
+	  <title>Cancelamento de Pagamento</title>
+	  <link href="http://rmgraficarapida.com.br/stylesheets/style.css" media="screen" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+<h1><b>Prezado <%= @pagamento.parcela_pedido.pedido.cliente.nome_completo %>,</b></h1>
+<p>Informamos que o pagamento <%= "%05d" % @pagamento.id %> referente ao pedido <%= "%05d" % @pagamento.parcela_pedido.pedido.id %> foi CANCELADO.</p>
+<p>Você pode realizar novamente o pagamento deste pedido acessando nosso site e navegando até o pedido informado. Caso não faça novamente o pagamento, o pedido será cancelado.</p>
+<br />
+<br />
+<h2>RM Gráfica Rápida</h2>
+<br /> <br />
+  </body>
+</html>

@@ -1,0 +1,13 @@
+development: &development
+  developer: true
+  base: "http://192.168.0.118"
+  return_to: "/url_retorno/pag_seguro"
+  email: alessandro_emerich@yahoo.com.br
+
+test:
+  <<: *development
+
+production:
+  authenticity_token: 8466F6367AD74ECB88D8CAF4506A8885
+  email: erlincabeleireiro@hotmail.com
+  return_to: "http://www.belaemporio.com.br/url_retorno/pag_seguro"

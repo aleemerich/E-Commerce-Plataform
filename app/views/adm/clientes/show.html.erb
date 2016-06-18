@@ -1,0 +1,270 @@
+<div id="div_fundo" style="display: none; position: absolute; top: 0px; left: 0px; z-index: 90; width: 100%; "></div>
+<div id="mainM">
+	<div class="block">
+	<form>
+		<p>
+		  <strong>Nome completo</strong><br />
+		  <span><%= @adm_cliente.nome_completo %></span>
+		</p>
+		
+		<p>
+		  <strong>CPF/CNPJ</strong><br />
+		  <span><%= @adm_cliente.cpf_cnpj %></span>
+		</p>
+		
+		<p>
+		  <strong>Data de Nascimento/Abertura</strong><br />
+		  <span><%= @adm_cliente.dt_nasc_abertura.strftime("%d/%m/%Y") %></span>
+		</p>
+		
+		<p>
+		  <strong>E-mail</strong><br />
+		  <span><%= @adm_cliente.email %></span>
+		</p>
+		<p>
+		  <strong>Status</strong><br />
+		  <span><%= @adm_cliente.status.descricao %></span>
+		</p>
+		
+		<p>
+		  <strong>Observações</strong><br />
+		  <span><%= @adm_cliente.obs.blank? ? "Sem observações" : @adm_cliente.obs %></span>
+		</p><br />
+		<input class="button" type="button" onclick="redirecionarURL('<%= edit_adm_cliente_path(@adm_cliente) %>')" value=" Editar os dados do cliente " /> &nbsp; &nbsp;
+		<% if @adm_cliente.status.codigo != '1' %> 
+		<input class="button" type="button" onclick="redirecionarURL('<%= block_adm_cliente_path(@adm_cliente) %>')" value=" Bloquear esse cliente " /> &nbsp; &nbsp;
+		<% end %>
+		<input class="button" type="button" onclick="redirecionarURL('<%= resend_adm_cliente_path(@adm_cliente) %>')" value=" Reenviar e-mail sobre cadastro " /> &nbsp; &nbsp;
+		<input class="button" type="button" onclick="redirecionarURL('<%= adm_clientes_path %>')" value=" Voltar a lista de clientes " />
+	</form>
+	<br />
+	<p>
+		<label>Endereços</label> 
+	    <table width="100%" border="0" style="margin-left:20px; width: 95%">
+	       <tr>
+	        <th scope="col">Rua</th>
+	        <th scope="col">Nro</th>
+	        <th scope="col">Complemento</th>
+	        <th scope="col">Cidade</th>
+	        <th scope="col">Estado</th>
+	        <th scope="col">CEP</th>
+	        <th scope="col">Status</th>
+	        <th scope="col">Ação</th>
+	      </tr>
+        <% @adm_enderecos.each do |adm_endereco| %>
+	      <tr>
+            <td><%= adm_endereco.logradouro %></td>
+            <td><%= adm_endereco.numero %></td>
+            <td><%= adm_endereco.complemento %></td>
+            <td><%= adm_endereco.cidade %></td>
+            <td><%= adm_endereco.estado %></td>
+            <td><%= adm_endereco.cep %></td>
+            <td><%= adm_endereco.status.descricao %></td>
+            <td style="text-align: center"><%= link_to 'Editar', adm_cliente_endereco_path(@adm_cliente, adm_endereco) %> |
+		    <%= link_to 'Apagar', delete_adm_endereco_path(adm_endereco)%></td>
+          </tr>
+	    <% end %>
+	    </table>
+	    <p><input class="button" type="button" onclick="abrirFormEndereco()" value=" Cadastrar um novo endereço " /></p>
+   	    <script type="text/javascript" src="http://cidades-estados-js.googlecode.com/files/cidades-estados-1.2-utf8.js"></script>
+	    <%=  javascript_include_tag 'lightbox_fixo' %>
+		<%= form_for(@adm_endereco, :html => {:id => 'form_cliente_endereco', :style => "visibility: hidden;position: absolute; z-index: 100; border-color: #CCC;"}) do |f| %>
+			<%= f.hidden_field :cliente_id, :value => @adm_cliente.id%>
+		    <label>Logradouro: </label>
+		    <%= f.text_field :logradouro, :size => 50 %><br />
+		    <label>Número: </label>
+		    <%= f.text_field :numero, :size => 5 %><br />
+		    <label>Complemento: </label>
+		    <%= f.text_field :complemento, :size => 50 %><br />
+		    <label>CEP: </label>
+		    <%= f.text_field :cep, :size => 10 %><br />
+		    <label>Cidade: </label>
+			<%= f.text_field :estado%><br />
+		    <label>Estado: </label>
+			<%= f.text_field :cidade%><br />
+						<script language="JavaScript" type="text/javascript" charset="utf-8">
+					        new dgCidadesEstados({
+					          cidade: document.getElementById('adm_endereco_cidade'),
+					          estado: document.getElementById('adm_endereco_estado'),
+							  change: true
+					        })
+				      	</script>
+		     <br /><%= f.submit :value => " Salvar este endereço ", :class => "button" %> &nbsp; &nbsp; 
+		     <input class="button" type="button" onclick="fecharFormEndereco()" value=" Cancelar " id="btn_endereco_fechar" />
+	    <% end %>
+  		    <script>
+    		function abrirFormEndereco(){
+	    		var formulario = document.getElementById('form_cliente_endereco')
+ 	    		var paginasMedidas = pegaMedidas();
+	    		var xtop = (paginasMedidas[3] / 2);
+	    		xtop = xtop - (formulario.scrollHeight / 2);
+	    		var xleft = (paginasMedidas[2] / 2);
+	    		xleft = xleft - (formulario.scrollWidth / 2);
+	    		formulario.style.top = (xtop - 50) + 'px';
+	    		formulario.style.left = (xleft - 100) + 'px';
+	    		ativaFundo();
+	    		formulario.style.visibility = "visible";
+	    		window.scrollTo(-10,-10);
+	    	}
+	    	
+	    	function fecharFormEndereco(){
+	    		desativaFundo();
+	    		var formulario = document.getElementById('form_cliente_endereco')
+	    		formulario.style.visibility = "hidden";
+	    	}
+	      </script>  
+
+  	</p>
+  	<br />  
+	<p>
+		<label>Telefone</label> 
+	    <table width="100%" border="0" style="margin-left:20px; width: 95%">
+	       <tr>
+	        <th scope="col">DDD</th>
+	        <th scope="col">Telefone</th>
+	        <th scope="col">Status</th>
+	        <th scope="col">Ação</th>
+	      </tr>
+        <% @adm_telefones.each do |adm_telefone| %>
+	      <tr>
+            <td><%= adm_telefone.ddd %></td>
+            <td><%= adm_telefone.telefone %></td>
+            <td><%= adm_telefone.status.descricao %></td>
+            <td style="text-align: center"><%= link_to 'Editar', adm_cliente_telefone_path(@adm_cliente, adm_telefone) %> |
+		    <%= link_to 'Apagar', delete_adm_telefone_path(adm_telefone)%></td>
+          </tr>
+	    <% end %>
+	    </table>
+	    <p><input class="button" type="button" onclick="abrirFormTelefone()" value=" Cadastrar um novo telefone " /></p>
+		<%= form_for(@adm_telefone, :html => {:id => 'form_cliente_telefone', :style => "visibility: hidden;position: absolute; z-index: 100; border-color: #CCC;"}) do |f| %>
+			<%= f.hidden_field :cliente_id, :value => @adm_cliente.id%>
+		    <label>DDD: </label>
+		    <%= f.text_field :ddd, :size => 5 %><br />
+		    <label>Telefone: </label>
+		    <%= f.text_field :telefone, :size => 15 %><br />
+		     <br /><%= f.submit :value => " Salvar este telefone ", :class => "button" %> &nbsp; &nbsp;
+		     <input class="button" type="button" onclick="fecharFormTelefone()" value=" Cancelar " id="btn_telefone_fechar" />
+	    <% end %>
+   		    <script>
+    		function abrirFormTelefone(){
+	    		var formulario = document.getElementById('form_cliente_telefone')
+	    		var paginasMedidas = pegaMedidas();
+	    		var xtop = (paginasMedidas[3] / 2);
+	    		xtop = xtop - (formulario.scrollHeight / 2);
+	    		var xleft = (paginasMedidas[2] / 2);
+	    		xleft = xleft - (formulario.scrollWidth / 2);
+	    		formulario.style.top = (xtop - 100) + 'px';
+	    		formulario.style.left = (xleft - 50) + 'px';
+	    		ativaFundo(); 
+	    		formulario.style.visibility = "visible";
+	    		window.scrollTo(-10,-10);
+	    	}
+	    	
+	    	function fecharFormTelefone(){
+	    		desativaFundo();
+	    		var formulario = document.getElementById('form_cliente_telefone')
+	    		formulario.style.visibility = "hidden";
+	    	}
+	      </script>  
+  	</p>
+  	<br />  
+	<p>
+		<label>Parcelamentos permitidos</label> 
+	    <table width="100%" border="0" style="margin-left:20px; width: 95%">
+	       <tr>
+	        <th scope="col">Parcelamento</th>
+	        <th scope="col">Validade</th>
+	        <th scope="col">Intervalo</th>
+	        <th scope="col">Parcelas</th>
+	        <th scope="col">Entrada</th>
+	        <th scope="col">Juros</th>
+	        <th scope="col">Desconto</th>
+	        <th scope="col">Ação</th>
+	      </tr>
+        <% @adm_cliente.forma_pagamento.each do |adm_forma_pagamento| %>
+	      <tr>
+            <td><%= adm_forma_pagamento.descricao %></td>
+            <td><%= adm_forma_pagamento.dt_inicio.strftime("%d/%m/%Y") %> até
+            <% if adm_forma_pagamento.dt_fim.blank? %> 
+            indeterminado
+            <% else %>
+            <%= adm_forma_pagamento.dt_fim.strftime("%d/%m/%Y") %>
+            <% end %>	
+            <td><%= adm_forma_pagamento.intervalo_dias %></td>
+            <td><%= adm_forma_pagamento.parcelas %></td>
+            <td><%= number_to_percentage(adm_forma_pagamento.perc_pgto_avista, :delimiter => '.', :precision => 2) %></td>
+            <td><%= number_to_percentage(adm_forma_pagamento.perc_juros_mes, :delimiter => '.', :precision => 2) %></td>
+            <td><%= number_to_percentage(adm_forma_pagamento.perc_desconto, :delimiter => '.', :precision => 2) %></td>
+            </td>
+            <td style="text-align: center"><%= link_to 'Apagar', remove_adm_forma_pagamento_path(adm_forma_pagamento.cliente_id, adm_forma_pagamento.id)%></td>
+          </tr>
+	    <% end %>
+	    </table>
+	    <p><input class="button" type="button" onclick="abrirFormPagamento()" value=" Adicionar formas de parcelamentos " /></p>
+		<%= form_tag :add_adm_forma_pagamento, :metod => "post", :id => 'form_cliente_forma_pagamento', :style => "visibility: hidden;position: absolute; z-index: 100; border-color: #CCC;" %>
+			<%= hidden_field_tag "clientes_forma_pagamentos[cliente_id]", @adm_cliente.id%>
+		    <label>Forma de parcelamento: </label>
+		    <%=select_tag "clientes_forma_pagamentos[forma_pagamento_id]", options_from_collection_for_select(Adm::FormaPagamento.all.collect, :id, :descricao) %><br />
+		    <label>Data de início: </label>
+		    <%= date_select 'clientes_forma_pagamentos', "dt_inicio", :order => [:day, :month, :year], :use_month_names => ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'], :start_year => Time.now.year, :end_year => Time.now.year + 1 %><br />
+		    <label>Data de expiração: </label>
+		    <%= date_select 'clientes_forma_pagamentos', "dt_fim", :include_blank => :true, :order => [:day, :month, :year], :use_month_names => ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'], :start_year => Time.now.year, :end_year => Time.now.year + 10 %><br />
+		     <br /><%= submit_tag " Atribuir esse parcelamento ", :class => "button" %> &nbsp; &nbsp;
+		     <input class="button" type="button" onclick="fecharFormPagamento()" value=" Cancelar " id="btn_pagamento_fechar" />
+	    </form>
+   		    <script>
+    		function abrirFormPagamento(){
+	    		var formulario = document.getElementById('form_cliente_forma_pagamento')
+	    		var paginasMedidas = pegaMedidas();
+	    		var xtop = (paginasMedidas[3] / 2);
+	    		xtop = xtop - (formulario.scrollHeight / 2);
+	    		var xleft = (paginasMedidas[2] / 2);
+	    		xleft = xleft - (formulario.scrollWidth / 2);
+	    		formulario.style.top = (xtop - 100) + 'px';
+	    		formulario.style.left = (xleft - 50) + 'px';
+	    		ativaFundo(); 
+	    		formulario.style.visibility = "visible";
+	    		window.scrollTo(-10,-10);
+	    	}
+	    	
+	    	function fecharFormPagamento(){
+	    		desativaFundo();
+	    		var formulario = document.getElementById('form_cliente_forma_pagamento')
+	    		formulario.style.visibility = "hidden";
+	    	}
+	      </script>  
+  	</p>
+</div>
+<!-- /main -->	
+</div>
+	<div id="sidebarM">
+					
+		<div class="sidemenu">
+			<h3>Informações</h3>
+			<ul>			
+			<% if @adm_cliente.pedido.last().nil? %>	
+				<li><span>Data da última compra</span>Não há compras</li>
+				<li><span>Valor da última compra</span>Não há compras</li>
+				<li><span>Número do Pedido</span>Não há compras</li>
+				<li><span>Valor total já gasto por esse cliente</span>Não há compras</li>
+			<% else %>
+				<li><span>Data da última compra</span><%= @adm_cliente.pedido.last().created_at.strftime("%d/%m/%Y %H:%M") %></li>
+				<li><span>Valor da última compra</span><%= number_to_currency(@adm_cliente.pedido.last().total, :separator => ",", :delimiter => ".", :unit => "R$ ") %></li>
+				<li><span>Número do Pedido</span><a href="/adm/painel/<%= @adm_cliente.pedido.last().id.to_s %>"><%= "%05d" % @adm_cliente.pedido.last().id %></a></li>
+				<li><span>Valor total já gasto por esse cliente</span><%= number_to_currency(@adm_cliente.pedido.sum(:total), :separator => ",", :delimiter => ".", :unit => "R$ ") %></li>
+			<% end %>
+                <br />
+	      </li>
+          </ul>
+		</div>							
+		<div class="sidemenu">
+			<h3>Últimos pedidos</h3>
+			<ul>				
+				<% @adm_cliente.pedido.order('id DESC').limit(5).all.each do |p| %>
+				<li><span><a href="/adm/painel/<%= p.id.to_s %>">[<%= "%05d" % p.id %>]</a> <%= p.created_at.strftime("%d/%m/%Y %H:%M") %></span><%= number_to_currency(p.total, :separator => ",", :delimiter => ".", :unit => "R$ ") %></li>
+				<% end %>
+                <br />
+	      </li>
+         </ul>
+        </div>
+</div>

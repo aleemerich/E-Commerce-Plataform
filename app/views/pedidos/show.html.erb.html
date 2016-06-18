@@ -1,0 +1,87 @@
+<!-- CONTENT -->
+	<div id="content"><div class="inner_copy"><div class="inner_copy">&nbsp;</div></div>
+		<div class="indent">
+			<div class="wrapper">
+				<div class="col-1">
+					<h3><b>Demonstrativo do</b> Pedido <%= "%05d" % @pedido.id %></h3>
+					<p style="color: #000">
+						<code id="cupon">
+							<%= montaExtrato(@pedido) %>
+		                </code>
+		            </p>
+		            <br />
+		            <a target="_blank" href="<%= impressao_pedido_path(@pedido) %>">[imprimir o extrato]</a>
+		        </div>
+				<div class="col-2">
+					<br />
+						<h3><b>Itens</b> desse pedido</h3>
+						<ul class="list">
+						<% if @pedido.item_pedido.order(:id).select{|i| i if i.status.codigo != 'IP-1'}.length == 0 %>
+							<li>Não há itens de pedido nesse pedido</li>
+						<% else %>
+							<% @pedido.item_pedido.order(:id).select{|i| i if i.status.codigo != 'IP-1'}.each do |i| %>
+								<li>
+									<% if @pedido.status.codigo == '0' %>
+									<span style="font-size:xx-small"><a href="<%= destroy_item_pedido_path(i) %>">[excluir]</a></span>
+									<% end %>
+									<span style="font-size:small"><b> (<%= i.id %>) <%= i.produto.nome %></b><br />
+									---> <%= number_to_currency(i.valor_total, :separator => ",", :delimiter => ".", :unit => "R$ ") %></span> 
+									<br />
+									</li>
+							<% end %>
+						<% end %>
+						</ul><br /><br />
+					<br/>	
+					<br />
+						<h3><b>Total</b> desse pedido</h3>
+						<span style="font-size:medium"><b><%= number_to_currency(@pedido.total, :separator => ",", :delimiter => ".", :unit => "R$ ") %></b></span> 
+						<br /><br />
+					<br/>					
+					<br />
+						<h3><b>Status</b> desse pedido</h3>
+						<span style="font-size:medium"><b><%= @pedido.status.descricao %></b></span> 
+						<br /><br />
+					<br/>
+					<!-- Verifica que é preciso apresentar parcelas, ou seja, se há parcelas ativas -->
+			        <% if @pedido.parcela_pedido.select{|p| p if p.status.codigo != '4'}.length != 0 %>
+					<br />
+						<h3><b>Parcelas</b> do pedido</h3>
+						<ul class="list">
+							<% @pedido.parcela_pedido.order(:dt_vencimento).select{|p| p if p.status.codigo != '4'}.each do |p| %>
+								<li><span style="font-size:small"><a> (<%= p.dt_vencimento.strftime("%d/%m/%Y") %>) Parcela <%= "%02d" % p.nro_parcela %></a> - 
+									<%= number_to_currency(p.valor, :separator => ",", :delimiter => ".", :unit => "R$ ") %></span><br />
+									&nbsp;&nbsp;&nbsp; :. Status da Parcela: <%= p.status.descricao.upcase %><br />
+									<% if !p.pagamento_pedido.nil? %>
+									&nbsp;&nbsp;&nbsp; :. Status do pagamento: <%= p.pagamento_pedido.status.descricao.upcase %><br />
+									<!-- LEMBRETE: somente o STATUS PRÉ-PAGAMENTO(0), NÃO APROVADO(2) e CANCELADO(5) libera o cliente para um re-pagamento -->
+									<% if p.pagamento_pedido.status.codigo == '0' or p.pagamento_pedido.status.codigo == '2' or p.pagamento_pedido.status.codigo == '5' %>
+											&nbsp;&nbsp;&nbsp; <span style="font-size:xx-small"><a href="<%= edit_pagamento_pedido_path(p.pagamento_pedido.id) %>">[REFAZER PAGAMENTO]</a></span><br/>
+										<% end %>
+									<% else %>
+									&nbsp;&nbsp;&nbsp; <span style="font-size:xx-small"><a href="<%= new_pagamento_pedido_path(p.id) %>"">[FAZER PAGAMENTO]</a></span><br/>
+									<% end %>						
+									</li>
+							<% end %>
+						</ul><br /><br />
+					<br/>
+					<% end %>
+					<% if @pedido.status.codigo == '0' or @pedido.status.codigo == '5'%>
+					<br />&nbsp;
+					<br />&nbsp;
+					<br />&nbsp;
+					<a href="<%= produtos_path %>" class="link1"><em><b>CONTINUAR COMPRANDO!</b></em></a> &nbsp; &nbsp;
+						<% if @pedido.status.codigo == '0'%>
+					<br />&nbsp;
+					<br />&nbsp;
+					<br />&nbsp;
+					<a href="<%= envio_pedido_path(@pedido)%>" class="link1"><em><b>FECHAR ESSE PEDIDO!</b></em></a> &nbsp; &nbsp;
+						<% end %>
+					<br />&nbsp;
+					<br />&nbsp;
+					<br />&nbsp;
+					<a href="<%= destroy_pedido_path(@pedido)%>" class="link1"><em><b>CANCELAR ESSE PEDIDO!</b></em></a> &nbsp; &nbsp;
+					<% end %>
+				</div>
+			</div>
+		</div>
+	</div>

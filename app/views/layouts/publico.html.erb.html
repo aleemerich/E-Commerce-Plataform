@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//PT-BR" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>RM Gráfica Rápida</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="Serviço de gráfica rápida" />
+<meta name="keywords" content="gráfica rápida" />
+<meta name="author" content="Arich" />
+<%= stylesheet_link_tag 'style.css' %>
+<%= javascript_include_tag 'jquery-1.4.2.min.js' %>
+<%= javascript_include_tag 'cufon-yui.js' %>
+<%= javascript_include_tag 'cufon-replace.js' %>
+<%= javascript_include_tag 'Myriad_Pro_400.font.js' %>
+<%= javascript_include_tag 'Myriad_Pro_600.font.js' %>
+<%= javascript_include_tag 'NewsGoth_BT_400.font.js' %>
+<%= javascript_include_tag 'NewsGoth_BT_700.font.js' %>
+<%= javascript_include_tag 'NewsGoth_Dm_BT_400.font.js' %>
+<%= javascript_include_tag 'script.js' %>
+<%= javascript_include_tag 'padrao' %>
+<!--[if lt IE 7]>
+	<%= javascript_include_tag 'ie_png.js' %>
+	<script type="text/javascript">
+		 ie_png.fix('.png, #header .row-2 ul li a, .extra img, #search-form a, #search-form a em, #login-form .field1 a, #login-form .field1 a em, #login-form .field1 a b');
+	</script>
+	<%= stylesheet_link_tag 'ie6.css' %>
+<![endif]-->
+</head>
+<body id="page1" onload="mensagem(<%= flash[:notice].blank? ? 'false' : 'true' %>);<%= carga_js %>">
+<div id="div_mensagem" align="center" style="position: absolute; z-index: 220; background: #CC0000; color: #FFFFFF; width: 100%; visibility: hidden">
+	<table style="width: 90%; border: 0px; background: #CC0000; margin: 10px 10px 10px 10px;">
+		<tr>
+			<td id="td_mensagem_aviso" align="center" style="font-size: small; width:95%; border:0px; background: #CC0000; vertical-align: middle; text-align: center; border-width: 0px; border-style: hidden;font-family:tahoma;">
+			 <%= flash[:notice] %>
+			</td>
+			<td align="right" style="width:5%;border:0px;">
+				<img style="border:0px;background-color:transparent" src="/images/fechar3.jpg" onclick="mensagem(false)"/>
+			</td>
+		</tr>
+	</table>
+</div>
+<div id="main">
+	<%= render :partial => "layouts/cabecalho_publico" %>
+
+	<%= yield %>
+	<!-- AddThis Button BEGIN -->
+	<div class="addthis_toolbox addthis_default_style ">
+	<a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+	<a class="addthis_button_tweet"></a>
+	<a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+	<a class="addthis_counter addthis_pill_style"></a>
+	</div>
+	<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4e1b619f0777b13b"></script>
+	<!-- AddThis Button END -->
+	<br />
+<!-- FOOTER -->
+	<div id="footer">
+		<div class="footer-nav">
+			<div class="left">
+				<ul>
+					<%= render :partial => "layouts/menu_publico_base" %>
+				</ul>
+			</div>
+		</div>
+		<div class="bottom">&copy; 2011 <strong>Copyright RM Gráfica Rápida</strong> pertence a <strong>RM Copiadora</strong> em São Paulo/SP - site e sistema by <a href="http://www.arich.com" title="Arich - Soluções JUSTAS em TI">Arich</a>
+		</div>
+	</div>
+</div>
+<script type="text/javascript"> Cufon.now(); </script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-15127404-6']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</body>
+</html>

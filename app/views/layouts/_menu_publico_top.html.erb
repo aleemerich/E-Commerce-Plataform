@@ -1,0 +1,9 @@
+					<li><a <%= params[:layout] == 'index' ? ' class="active"'.html_safe : '' %> href="/"><span>home</span></a></li>
+					<li><a <%= params[:layout] == 'quem_somos' ? ' class="active"'.html_safe : '' %> href="/quem_somos"><span>QUEM SOMOS</span></a></li>
+					<li><a <%= params[:layout] == 'produtos' ? ' class="active"'.html_safe : '' %> href="/produtos"><span>PRODUTOS</span></a></li>
+					<li><a <%= params[:layout] == 'contato' ? ' class="active"'.html_safe : '' %>href="/contato"><span>CONTATO</span></a></li>
+<% if session[:cliente] %>
+					<li class="last"><a <%= params[:layout] == 'pedido' ? ' class="active"'.html_safe : '' %>href="/pedidos"><span>PEDIDOS</span></a></li>
+<% else %>
+					<li class="last"><a <%= params[:layout] == 'cadastro' ? ' class="active"'.html_safe : '' %>href="/clientes/new"><span>CADASTRO</span></a></li>
+<% end %>

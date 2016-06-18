@@ -1,0 +1,8 @@
+		<h1 id="logo-text"><a href="" title=""><%= @layout[1] %></a></h1>		
+		<p id="<%= @layout[2] %>">
+		<% if !@layout[4].blank? %>
+        <a href="<%= @layout[4] %>"><img src="/images/edit_add.png" width="26" height="24" style="vertical-align:middle" />&nbsp;&nbsp;<%= @layout[3] %></a>
+        <% else %>	
+        	<%= @layout[3].html_safe %>
+        <% end %>
+        </p>

@@ -1,0 +1,17 @@
+					<div class="box2">
+						<div class="border-top">
+							<div class="left-top-corner">
+								<div class="right-top-corner">
+									<div class="inner">
+										<h4><b>Lançamentos</b></h4>
+										<ul class="news">
+											<% produtos.each do |p| %>
+											<li><a href="<%= produto_path(p) %>"><%= p.nome.length > 30 ? p.nome[0,30] + '...' : p.nome %></a>
+											  <!-- <p><%= p.descricao.length > 70 ? p.descricao[0,70].html_safe + '...' : p.descricao.html_safe %></p></li> -->
+											<% end %>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>

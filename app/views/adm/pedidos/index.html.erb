@@ -1,0 +1,34 @@
+<div id="mainFull">
+	<div class="block">
+		<table>
+		  <tr>
+		    <th>Código</th>
+		    <th>Data</th>
+		    <th>Cliente</th>
+		    <th>Valor</th>
+		    <th>Status</th>
+		    <th style="width: 15%; text-align: center">Acão</th>
+		  </tr>
+		<% @adm_pedidos.each do |adm_pedido| %>
+		  <tr onclick="redirecionarURL('pedidos/<%= adm_pedido.id %>')" class="<%= alerta_painel(adm_pedido.status.codigo)%>">
+		    <td><%= "%07d" % adm_pedido.id %></td>
+		    <td><%= adm_pedido.created_at.strftime("%d/%m/%Y %H:%M") %></td>
+		    <td><%= adm_pedido.cliente_id.nil? ? 'Sem cliente atribuido' : adm_pedido.cliente.nome_completo %></td>
+		    <td><%= number_to_currency(adm_pedido.total, :separator => ",", :delimiter => ".", :unit => "R$ ") %></td>
+		    <td><%= adm_pedido.status.descricao %></td>
+		    <td style="text-align: center"><%= link_to 'Ver', adm_pedido %> </td>
+		  </tr>
+		<% end %>
+		</table>
+		<p>
+			<% if @offset > 0%>
+			  <%= link_to 'Anterior', '/adm/pedidos/pag/' + (@offset - 20).to_s %> | 
+			  <%= link_to 'Próxima', '/adm/pedidos/pag/' + (@offset + 20).to_s %>
+			<% else %>
+			  <%= link_to 'Próxima', '/adm/pedidos/pag/20'%>
+			<% end %>
+		</p>
+		<br />
+	</div>
+<!-- /main -->	
+</div>

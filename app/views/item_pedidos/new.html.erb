@@ -1,0 +1,85 @@
+<%= javascript_include_tag 'item_extra' %>
+<%= javascript_include_tag 'lightbox' %>
+<!-- CONTENT -->
+	<div id="content"><div class="inner_copy"><div class="inner_copy">&nbsp;</div></div>
+		<div class="indent">
+			<div class="wrapper">
+				<div class="col-1">
+					<h3><b>Adicionando um produto</b></h3>
+					<div class="img-box1">
+						<p class="p0">
+							&nbsp; &nbsp; &nbsp;<span style="font-size:medium">Produto</span><br />
+							&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+								<span style="font-size:large"><b><%= @produto.nome %></b></span><br /><br />
+							&nbsp; &nbsp; &nbsp;<span style="font-size:medium">Preço Unitário</span><br />
+							&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+								<span style="font-size:large"><b><%= number_to_currency(@produto.valor_max, :separator => ",", :delimiter => ".", :unit => "R$ ") %> 
+								</b></span><br /><br />
+							&nbsp; &nbsp; &nbsp;<span style="font-size:medium">Informações complementares</span>
+						</p>
+				  	<%= form_for(@adm_item_pedido, :url => '/item_pedidos', :method => :post, :html => {:multipart => true, :id => 'Xcontacts-form'}) do |f| %>
+					<%= f.hidden_field :produto_id, :value => @produto.id %>
+					<%= f.hidden_field :valor_unitario, :value => @produto.valor_max %>
+					<%= f.hidden_field :pedido_id, :value => @pedido.id %>
+					<%= f.hidden_field :status_id, :value => Status.where(["codigo = 'IP-0' and area_id = ?", Area.select('id').where(["codigo = 5"]).first]).first.id %>
+				  	<table>
+						<tr>
+							<% if @produto.fl_oculta_qtde %>
+								<%= f.hidden_field :quantidade, :value => @produto.txt_oculta_qtde %>
+							<% else %>
+							<td class="destaque">
+								Informe a quantidade
+								</td>
+								<td>
+									<div class="field">
+								    <%= f.text_field :quantidade, :size => 30 %>
+									<% if @produto.fl_ajuda_qtde %>
+								    	*<br /><br /><span style="font-size: x-small">* <%= @produto.txt_ajuda %></span>
+								    <% end %>
+								    </div>
+							    </td>
+							<% end %>
+						</tr>
+						<% if @produto.fl_desconto %>
+						<tr>
+							<td class="destaque">Análise de desconto</td>
+							<td><div class="field">
+							    <%= check_box_tag 'fl_desconto' %> Quero solicitar análise de desconto.
+							    <span style="font-size: x-small; color:#FF0000"><br /><strong>Fique Atento!</strong> A análise de desconto só será concedida mediante itens com grandes quantidades ou pedidos com valores consideráveis.</span>
+							</div></td>
+						</tr>
+						<% end %>
+						<% @produto.produto_extra.each do |produto_extra|%>
+								<% if produto_extra.status_id == Status.where(["codigo = '0' and area_id = ?", Area.select('id').where(["codigo = 3"]).first]).first.id%>
+								<tr>
+									<td class="destaque"><%= produto_extra.nome %></td>
+									<td><div class="field"><p id="itens_extras_<%= produto_extra.id %>">
+									    	<span style="font-size: x-small">** Forma de cobrança: <%= produto_extra.produto_extra_fator_calculo.nome %></span><br />
+									    <input id="adm_item_pedido_extra_item_<%= produto_extra.id %>_produto_extra_id" name="adm_item_pedido_extra[item<%= produto_extra.id %>[produto_extra_id]]" type="hidden" value="<%= produto_extra.id %>" />
+									    <%= montaInputs(produto_extra.produto_extra_tipo.tag, produto_extra.id.to_s, produto_extra.valor_cobrado) %>
+									    <% if !produto_extra.txt_ajuda.blank? %>
+											<br /><span style="font-size: x-small">[DICA] <%= produto_extra.txt_ajuda.html_safe %><br /></span></p>
+									    <% end %>
+									</div></td>
+								</tr>
+								<% end %>
+						<% end %>				
+						<tr>
+							<td class="destaque">Suas observações</td>
+							<td><div class="field">
+							    <%= f.text_area :obs, :rows =>5, :cols => 60 %>
+							</div></td>
+						</tr>
+					</table><br /><br />
+					<a href="#" onclick="checa_input_file()" class="link1"><em><b>ADICIONAR!</b></em></a> &nbsp; &nbsp;
+					<% end %>
+				   </div>
+				</div>
+				<div class="col-2">
+					<br />
+					<%= render :partial => "layouts/lancamentos", :locals => {:produtos => @publico_produtos_recentes} %>
+					<%= render :partial => "layouts/login" %>
+				</div>
+			</div>
+		</div>
+	</div>

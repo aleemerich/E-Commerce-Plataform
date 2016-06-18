@@ -1,0 +1,30 @@
+<div id="mainFull">
+	<div class="block">
+		<table>
+		  <tr>
+		    <th>Pedido</th>
+		    <th>Pago via</th>
+		    <th>Codigo Pagamento</th>
+		    <th>Última atualização</th>
+		    <th>Cliente</th>
+		    <th>Valor</th>
+		    <th>Status</th>
+		  </tr>
+		<% @adm_pagamento_pedidos.each do |adm_pagamento_pedido| %>
+		  <tr onclick="">
+		    <td><a href="<%= adm_pedido_path(adm_pagamento_pedido.parcela_pedido.pedido.id) %>" >
+		    		<%= "%05d" % adm_pagamento_pedido.parcela_pedido.pedido.id %></a></td>
+		    <td><%= adm_pagamento_pedido.pagamento_pedido_empresa.nome.upcase %></td>
+		    <td><%= "%05d" % adm_pagamento_pedido.id %></td>
+		    <td><%= adm_pagamento_pedido.updated_at.strftime("%d/%m/%Y %H:%M") %></td>
+		    <td><%= adm_pagamento_pedido.parcela_pedido.pedido.cliente.nome_completo %></td>
+		    <td><%= number_to_currency(adm_pagamento_pedido.valor, :separator => ",", :delimiter => ".", :unit => "R$ ") %></td>
+		    <td><%= adm_pagamento_pedido.status.descricao %></td>
+		    </td>
+		  </tr>
+		<% end %>
+		</table>
+		<br />
+	</div>
+<!-- /main -->	
+</div>

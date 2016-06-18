@@ -1,0 +1,47 @@
+
+<!-- CONTENT -->
+	<div id="content"><div class="inner_copy"><div class="inner_copy">&nbsp;</div></div>
+		<div class="indent">
+			<div class="wrapper">
+				<div class="col-1">
+					<h3><b>Forma de</b> pagamento</h3>
+					<span>Total do Pedido: </span>
+					<span style="color:#FF0000; font-size: large"><%= number_to_currency(@pagamento_pedido.parcela_pedido.valor, :separator => ",", :delimiter => ".", :unit => "R$ ") %></span></b><br /><br />
+					<span>Escolha a forma de pagamento</span><br /><br />
+					<%= form_for(@pagamento_pedido, :url => update_pagamento_pedido_path(@pagamento_pedido), :method => :put, :html => {:id => 'Xcontacts-form'}) do |f| %>
+					  <%= f.hidden_field :parcela_pedido_id, :value => @pagamento_pedido.parcela_pedido.id %>
+					  <%= f.hidden_field :valor, :value => @pagamento_pedido.parcela_pedido.valor %>
+						<table style="padding: 5px 5px 5px 5px">
+						  <% Adm::PagamentoPedidoEmpresa.all.each do |empresa| %>
+			   		      <tr style="">
+					      	<td style="text-align:center;border-style:dashed;width:1%;"><%= radio_button 'adm_pagamento_pedido', 'pagamento_pedido_empresa_id', empresa.id %></td>
+					      	<td style="border-style:dashed;width:99%;"><img width="100%" src="<%= empresa.url_logo%>" /></td>
+					      </tr>
+						  <% end %>
+					    </table><br />
+					    <div class="actions"><br />
+					      <a href="#" onclick="document.getElementById('Xcontacts-form').submit()" class="link1"><em><b>ENVIAR!</b></em></a>
+					    </div>
+					<% end %>
+			    </div>
+				<div class="col-2">
+					<div class="box2">
+						<div class="border-top">
+							<div class="left-top-corner">
+								<div class="right-top-corner">
+									<div class="inner">
+										<h4 style="text-align: center"><b>ATENÇÃO!</b></h4>
+										<ul class="news">
+											<li><p>Você será <b><span style="color:#E7871C">redirecionado</span> para o site de pagamento.</b></p></li>
+											<li><p>Essa operação é <b>100% segura</b> e visa mais confiabilidade para nós e você!</b></p></li>
+											<li><p>Se tem dúvidas em relação aos seus parcelamentos, <b>entre em contato conosco </b>e tire suas dúvidas antes do fechamento!</p></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>

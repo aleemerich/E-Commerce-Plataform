@@ -1,0 +1,54 @@
+<div id="main50">
+	<div class="block">
+		<form>
+			<p>
+				<span>Dados do pedido</span><br /><br />
+			  	Código: <b><%= "%05d" % @adm_pagamento_pedido.parcela_pedido.pedido.id.to_s %></b><br />
+			  	Data de criação: <b><%= @adm_pagamento_pedido.parcela_pedido.pedido.created_at.strftime("%d/%m/%Y %H:%M") %></b><br />
+			  	Valor do frete: <b><%= number_to_currency(@adm_pagamento_pedido.parcela_pedido.pedido.valor_envio, :separator => ",", :delimiter => ".", :unit => "R$ ") %></b><br />
+			  	Valor Total: <b><%= number_to_currency(@adm_pagamento_pedido.parcela_pedido.pedido.total, :separator => ",", :delimiter => ".", :unit => "R$ ") %></b><br />
+			  	Status: <b><%= @adm_pagamento_pedido.parcela_pedido.pedido.status.descricao %></b><br />
+			  	Detalhes do pedido: VIDE AO LADO
+			</p><br />
+			<p>
+				<span>Dados do cliente</span><br /><br />
+				Código: <b><%= "%05d" % @adm_pagamento_pedido.parcela_pedido.pedido.cliente.id.to_s %></b><br />
+				Nome Completo: <b><a href="<%= adm_cliente_path(@adm_pagamento_pedido.parcela_pedido.pedido.cliente.id) %>">
+						<%= @adm_pagamento_pedido.parcela_pedido.pedido.cliente.nome_completo %></a></b> 
+						<a href="<%= adm_cliente_path(@adm_pagamento_pedido.parcela_pedido.pedido.cliente.id) %>">[ver ficha]</a><br />
+				E-mail: <b><%= @adm_pagamento_pedido.parcela_pedido.pedido.cliente.email %></b><br />
+			</p><br />
+			<p>
+				<span>Dados de envio</span><br /><br />
+			<% if @adm_pagamento_pedido.parcela_pedido.pedido.endereco.nil? %>
+				Esse pedido não será enviado. Você precisará retirá-lo pessoalmente.
+			<% else %>		
+				Logradouro: <b><%= @adm_pagamento_pedido.parcela_pedido.pedido.endereco.logradouro %></b><br />
+				Número: <b><%= @adm_pagamento_pedido.parcela_pedido.pedido.endereco.numero %></b><br />
+				Complemento: <b><%= @adm_pagamento_pedido.parcela_pedido.pedido.endereco.complemento %></b><br />
+				Cidade: <b><%= @adm_pagamento_pedido.parcela_pedido.pedido.endereco.cidade %></b><br />
+				Estado: <b><%= @adm_pagamento_pedido.parcela_pedido.pedido.endereco.estado %></b><br />
+				CEP: <b><%= @adm_pagamento_pedido.parcela_pedido.pedido.endereco.cep %></b><br />
+			<% end %>
+			</p><br />
+			<p>
+				<span>Forma de Pagamento</span><br /><br />
+				Empresa: <b><%= @adm_pagamento_pedido.pagamento_pedido_empresa.nome %></b><br />
+				Site: <b><a href="<%= @adm_pagamento_pedido.pagamento_pedido_empresa.url_site %>" target="_blanck" ><%= @adm_pagamento_pedido.pagamento_pedido_empresa.url_site.html_safe %></a></b><br />
+			</p><br /><br />
+			<input class="button" type="button" onclick="redirecionarURL('<%= edit_adm_pagamento_pedido_path(@adm_pagamento_pedido) %>')"value=" Modificar a forma de pagamento " />
+  	      	<input class="button" type="button" value=" Prosseguir " /> &nbsp &nbsp 
+		</form>
+	</div>
+<!-- /main -->	
+</div>
+<div id="sidebar50">
+					
+		<div class="sidemenu">
+			<h3>Detalhes do Produtos</h3>
+			<p style="color: #000">
+				<code id="cupon">
+					<%= montaExtrato(@adm_pagamento_pedido.parcela_pedido.pedido) %>
+                </code></p>
+   		</div>							
+</div>

@@ -1,0 +1,10 @@
+					<li><a href="/">Home</a></li>
+					<li><a href="/quem_somos">Nós</a></li>
+					<li><a href="/produtos">Produtos</a></li>
+<% if session[:cliente] %>
+					<li><a href="/pedidos">Pedidos</a></li>
+<% else %>
+					<li><a href="/clientes/new">Cadastro</a></li>
+<% end %>
+					<li class="last"><a href="/contato">Contato</a></li>
+

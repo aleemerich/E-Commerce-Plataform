@@ -1,0 +1,71 @@
+<%=  javascript_include_tag 'ckeditor/ckeditor' %>
+<%= form_for(@adm_produto) do |f| %>
+  <div class="field"><p>
+    <%= f.label :nome, 'Nome do produto' %><br />
+    <%= f.text_field :nome, :size => 100 %></p>
+  </div>
+  <div class="field"><p>
+    <%= f.label :descricao, 'Descrição' %><br />
+    <%= f.text_area :descricao, :rows =>10, :cols => 60 %></p>
+	<script type="text/javascript">
+			CKEDITOR.replace( 'adm_produto_descricao');
+	</script>
+  </div>
+  <div class="field"><p>
+    <%= f.label :valor_max, 'Valor Unitário Máximo' %><br />
+    <span style="font-size:x-large; vertical-align: middle">R$</span>&nbsp;&nbsp;<%= f.text_field :valor_max, :value => number_to_currency(@adm_produto.valor_max, :separator => ".", :unit => "", :precision => 2) %><br />
+    <br /><br /></p>
+  </div>
+  <div class="field"><p>
+    <%= f.label :valor_min, 'Valor Unitário Mínimo' %><br />
+    <span style="font-size:x-large; vertical-align: middle">R$</span>&nbsp;&nbsp;<%= f.text_field :valor_min, :value => number_to_currency(@adm_produto.valor_min, :separator => ".", :unit => "", :precision => 2) %><br />
+    <br /><br /></p>
+  </div>
+  <div class="field"><p>
+    <label for="name">Dimensões</label><br />
+    <%= f.text_field :peso, :size => 10 %>&nbsp;&nbsp;<span style="font-size:x-small;vertical-align: middle"> peso (g)</span><br />
+    <%= f.text_field :largura, :size => 5 %>&nbsp; x &nbsp; 
+    <%= f.text_field :altura, :size => 5 %>&nbsp; x &nbsp; 
+    <%= f.text_field :comprimento, :size => 5 %>
+    &nbsp;&nbsp;<span style="font-size:x-small;vertical-align: middle"> largura x altura x comprimento (cm)</span></p>
+  </div>
+  <div class="field"><p>
+  	<label for="name">Quantidade</label><br />
+    <%= f.check_box :fl_oculta_qtde %>&nbsp;Ocultar campo 'Quantidade' na hora da compra, atribuindo sempre o valor:&nbsp;
+    <%= f.text_field :txt_oculta_qtde, :size => 5 %><br />
+    <%= f.check_box :fl_ajuda_qtde %>&nbsp;Mostrar um texto de ajuda ao lado do campo 'Quantidade':&nbsp;
+    <%= f.text_field :txt_ajuda, :size => 20 %></p>
+  </div>
+  <div class="field"><p>
+  	<label for="name">Análise de Desconto</label><br />
+    <%= f.check_box :fl_desconto %>&nbsp;Permitir que o cliente solicite análise de desconto para esse produto.</p>
+  </div>
+  <div class="field"><p>
+    <%= f.label :status_id, 'Status'%><br />
+    <% if session[:usuario].status.codigo == '0' and session[:usuario].status.area.codigo == '0'%>
+    <%= 	f.collection_select(:status_id, Status.all(:conditions => ['area_id = ?', Area.select('id').where(["codigo = 3"]).first]), :id, :descricao) %>
+    <% else %>
+    <%= 	f.collection_select(:status_id, Status.all(:conditions => ['codigo IN (0,1) AND area_id = ?', Area.select('id').where(["codigo = 3"]).first]), :id, :descricao) %>
+    <% end %></p>
+  </div>
+  <div class="field"><p>
+  	<label>Categorias</label> &nbsp;&nbsp;<a href="<%= adm_categorias_path %>">[Adicionar/Editar as Categorias]</a><br />
+   	<%= checkbox_filhos(Adm::Categoria.order(:ordem).where("categoria_pai_id is null").all, @adm_produto, 0).html_safe %>
+  	<br />
+   </p>
+  </div>
+  <div class="field"><p>
+    <%= f.label :perc_comissao, 'Comissão ARICH' %><br />
+    <span style="font-size:x-large; vertical-align: middle">%</span>&nbsp;&nbsp;
+    <% if session[:usuario].status.codigo == '0' and session[:usuario].status.area.codigo == '0'%>
+    <%= f.text_field :perc_comissao, :value => number_with_precision((@adm_produto.perc_comissao.nil? ? 25 : (@adm_produto.perc_comissao * 100)), :delimiter => '.', :precision => 2) %></p>
+    <% else %>
+    <%= f.text_field :perc_comissao, :disabled => 'disabled', :value => number_with_precision((@adm_produto.perc_comissao.nil? ? 25 : (@adm_produto.perc_comissao * 100)), :delimiter => '.', :precision => 2) %></p>
+    <% end %></p>
+  </div>
+  <div class="actions"><p>
+    <%= f.submit :value => " Salvar os dados do produto ", :class => "button" %> &nbsp; &nbsp; 
+	<input class="button" type="button" onclick="redirecionarURL('<%= adm_produtos_path %>')" value=" Voltar a lista de produtos " />
+	</p>
+  </div>
+<% end %>

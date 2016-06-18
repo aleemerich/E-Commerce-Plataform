@@ -1,0 +1,61 @@
+<%= javascript_include_tag 'frete' %>
+<%= javascript_include_tag 'ajax' %>
+<script>
+	// Colhendo informações so servidor
+	var atributos = new Array();
+	atributos[0] = '' // Cep de Destino
+	atributos[1] = '' // Codigo do Servico
+	atributos[2] = '' // Funcao
+	atributos[3] = '<%= @pedido.id %>' // Pedido_id
+</script>
+<!-- CONTENT -->
+	<div id="content"><div class="inner_copy"><div class="inner_copy">&nbsp;</div></div>
+		<div class="indent">
+			<div class="wrapper">
+				<div class="col-1">
+					<h3><b>Forma de</b> parcelamento</h3>
+					<span>Total do Pedido: </span>
+					<span style="color:#FF0000; font-size: large"><%= number_to_currency(@pedido.total, :separator => ",", :delimiter => ".", :unit => "R$ ") %></span></b><br /><br />
+					<span>Escolha a forma de parcelamento</span><br /><br />
+					<table>
+					  <% @parcela_pedidos.each_index do |x| %>
+						      	<td style="text-align:center; vertical-align: middle;">
+						      	<a href="<%= parcela_rec_pedido_path(@pedido, @forma_pagamentos[x]) %>" class="link1"><em><b>ESCOLHER!</b></em></a>
+						      	<td><b><%= @forma_pagamentos[x].descricao %></b><br />
+								<% @parcela_pedidos[x].each do |parcela| %>
+									- Pagamento <%= "%02d" % parcela.nro_parcela%> =  
+									<%= number_to_currency(parcela.valor, :separator => ",", :delimiter => ".", :unit => "R$ ") %>
+									<% if parcela.perc_juros > 0.0 %>
+									 (+ <%= number_to_percentage((parcela.perc_juros * 100), :precision => 2) %>)
+									<% end %>
+									 (venc <%= parcela.dt_vencimento <= DateTime.now ? 'Hoje' : parcela.dt_vencimento.strftime("%d/%m/%Y") %>)<br />
+							    <% end %>
+						      	</td>
+						      </tr>
+						    
+					  <% end %>
+				    </table>
+				    <br /><br /><br />
+				    <a href="#" onclick="redirecionarURL('<%= envio_pedido_path(@pedido) %>')" class="link1"><em><b>VOLTAR!</b></em></a>
+			    </div>
+				<div class="col-2">
+					<div class="box2">
+						<div class="border-top">
+							<div class="left-top-corner">
+								<div class="right-top-corner">
+									<div class="inner">
+										<h4 style="text-align: center"><b>ATENÇÃO!</b></h4>
+										<ul class="news">
+											<li><p>Após a definição do parcelamento, seu pedido <b>será fechado PERMANENTEMENTE!</b></p></li>
+											<li><p>Pense bem antes de optar por uma parcela. <b>Essa operação só pode ser feita uma vez!</b></p></li>
+											<li><p>Se tem dúvidas em relação aos seus parcelamentos, <b>entre em contato conosco e tire suas dúvidas antes do fechamento!<b></p></b></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>

@@ -1,0 +1,33 @@
+<!-- CONTENT -->
+	<div class="inside">
+		<%= form_tag "/produtos/busca", :id => "contacts-form" %>
+			<fieldset>
+			  <label>BUSQUE NOVAMENTE: </label><input id="parametro" name="parametro" type="text" value="<%= params[:parametro] %>" /><a href="#" onclick="document.getElementById('contacts-form').submit()" class="link1"><em><b>OK</b></em></a>
+			</fieldset>
+		</form>
+	</div>
+
+	<div id="content"><div class="inner_copy"><div class="inner_copy">&nbsp;</div></div>
+		<ul class="box-list">
+			<% @publico_produtos_exibicao.each do |p|%>
+			<li class="last">
+				<div class="box">
+					<div class="border-bot">
+						<div class="right-bot-corner">
+							<div class="left-bot-corner">
+								<div class="inner">
+									<div class="box1">
+										<div class="inner">
+											<h4><a href="<%= produto_path(p) %>"><b><%= p.nome%></b></a> </h4>
+											<p><%= p.descricao.length > 200 ? p.descricao[0,200] + '...' : p.descricao %> <a href="<%= produto_path(p) %>"><img src="/images/arrow.gif" alt="Leia mais..." /></a></p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</li>
+			<% end %>
+		</ul>
+	</div>

@@ -1,0 +1,50 @@
+<div id="main50">
+	<div class="block" style="background-color:#FFF; color: #000">
+		<p style="text-align:right"><br />
+			<input class="button" type="button" onclick="redirecionarURL('<%= cancel_adm_parcela_pedido_path(@adm_parcela_pedido) %>')" value=" Cancelar todas as parcelas referente a essa" />
+		</p>
+            <h2 style="color: #000;">Dados sobre a parcela</h2>
+			<p>
+				Código: <span style="font-size:x-large"> <%= "%05d" % @adm_parcela_pedido.id.to_s%></span><br /><br />
+				Número: <span style="font-size:x-large"> <%= "%02d" % @adm_parcela_pedido.nro_parcela%></span><br /><br />
+				Valor: <span style="font-size:x-large"><%= number_to_currency(@adm_parcela_pedido.valor, :separator => ",", :delimiter => ".", :unit => "R$ ") %></span><br /><br />
+				Vencimento: <span style="font-size:x-large"><%= @adm_parcela_pedido.dt_vencimento.strftime("%d/%m/%Y") %></span><br /> <br />
+				Status: <span style="font-size:x-large"> <%= @adm_parcela_pedido.status.descricao %></span><br /><br />
+           </p><br /><br />
+	</div>
+
+<!-- /main -->	
+</div>
+<div id="sidebar50">
+	<% if !@adm_parcela_pedido_status.nil? %>
+	<br /><div class="sidemenu">	
+		<h3>Mudar status</h3>
+		<p>
+			<% @adm_parcela_pedido_status.each do |status| %>
+				<input class="button" type="button" onclick="redirecionarURL('<%= andamentos_adm_parcela_pedido_path(@adm_parcela_pedido, status) %>')" value=" <%= status.descricao %> " />  &nbsp;
+	        <% end %>
+		</p>
+	</div><br />
+	<% end %>
+
+	<div class="sidemenu">
+		<h3>Pagamento</h3>
+		<ul>
+		<% if @adm_parcela_pedido.pagamento_pedido.nil? %>
+	        <li><span>Nenhum pagamento efetuado para essa parcela</span></li>
+	    <% else %>
+			<li><span><%= @adm_parcela_pedido.pagamento_pedido.created_at.strftime("%d/%m/%Y %H:%M") %> - <%= number_to_currency(@adm_parcela_pedido.pagamento_pedido.valor, :separator => ",", :delimiter => ".", :unit => "R$ ") %>
+			    (<%= @adm_parcela_pedido.pagamento_pedido.status.descricao.upcase %>)</span>
+			</li>
+	    <% end%>
+       </ul>
+    </div>
+    
+    <div class="sidemenu">
+		<h3>Pedido</h3>
+		<ul>
+	        <li><%= "%05d" % @adm_parcela_pedido.pedido_id %> &nbsp; 
+	        	<span>código</span></li>			  
+       </ul>
+    </div>		
+</div>

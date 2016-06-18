@@ -1,0 +1,72 @@
+<%= javascript_include_tag 'frete' %>
+<%= javascript_include_tag 'lightbox' %>
+<%= javascript_include_tag 'ajax' %>
+<script>
+	// Colhendo informações so servidor
+	var atributos = new Array();
+	atributos[0] = '' // Cep de Destino
+	atributos[1] = '' // Codigo do Servico
+	atributos[2] = '' // Funcao
+	atributos[3] = '<%= @pedido.id %>' // Pedido_id
+</script>
+<!-- CONTENT -->
+	<img id="img_aguarde" src="/images/loader.gif" style="position:absolute; visibility: hidden; z-index: 10000" />
+	<div id="content"><div class="inner_copy"><div class="inner_copy">&nbsp;</div></div>
+		<div class="indent">
+			<div class="wrapper">
+				<div class="col-1">
+					<h3><b>Forma de</b> envio</h3>
+					<%= form_for(@pedido, :url => envio_pedido_path(@pedido), :html => {:id => 'edit_adm_pedido'})  do |f| %>
+					  <%= f.hidden_field :endereco_id, :value => '' %>
+					  <%= f.hidden_field :valor_envio, :value => 0.0 %>
+					  <%= f.hidden_field :forma_envio_id, :value => '' %>
+						<br /><br />
+						<span>Total do Pedido: </span>
+						<span style="color:#FF0000; font-size: large"><%= number_to_currency(@pedido.total, :separator => ",", :delimiter => ".", :unit => "R$ ") %></span></b><br /><br />
+						<span>Escolha um endereço</span><br /><br />
+						<table>
+						  <% @enderecos.each do |endereco| %>
+			   		      <tr>
+					      	<td style="text-align:center"><%= radio_button "pedido", "endereco_id", endereco.id.to_s + ';' + endereco.cep, :onclick => "getCEP(" + endereco.id.to_s + endereco.cep + ")" %></td>
+					      	<td><%= endereco.logradouro.upcase%>
+					      		<%= endereco.numero.blank? ? 'S/N' : ', ' + endereco.numero.upcase%> 
+					      		<%= endereco.complemento.blank? ? '' : ' (' + endereco.complemento.upcase + ')'%>
+					        </td>
+					      	<td style="text-align:center">
+			   				    <%= endereco.cidade %>
+					      	</td>
+					      	<td style="text-align:center">
+			   				    <%= endereco.estado %>
+					      	</td>
+					      	<td style="text-align:center">
+			   				    <%= endereco.cep %>
+					      	</td>
+					      </tr>
+						  <% end %>
+					    </table>
+						<br />
+						<a href="<%= cliente_path(@pedido.cliente_id) %>" onclick="" class="link1"><em><b>ADICIONAR ENDEREÇO</b></em></a>
+						<p>&nbsp;</p><br />
+						<span>Escolha serviço</span><br /><br />
+						<table border="0" style="margin-left:0px; width: 100%">
+						  <% @forma_envios.each do |forma_envio| %>
+			   		      <tr>
+					      	<td style="text-align:center"><%= radio_button "forma", "envio", forma_envio.codigo + ';' + forma_envio.funcao_envio + ';' + forma_envio.id.to_s, :onclick => "getServico('" + forma_envio.codigo + forma_envio.funcao_envio + forma_envio.id.to_s + "')" %></td>
+					      	<td><%= forma_envio.descricao.upcase%> (<%= forma_envio.empresa %>)</td>
+					      </tr>
+						  <% end %>
+					    </table>
+						<br />
+						<span id="mensagem"></span>
+					<% end %>
+			    </div>
+				<div class="col-2">
+						<p>&nbsp;</p>
+						<br /><br /><br />
+						<a href="#" onclick="document.getElementById('edit_adm_pedido').submit()" class="link1"><em><b>ADICONAR FRETE!</b></em></a>
+						<br /><br /><br />
+						<a href="#" onclick="anularFrete()" class="link1"><em><b>VOU RETIRAR PESSOALMENTE!</b></em></a>
+				</div>
+			</div>
+		</div>
+	</div>

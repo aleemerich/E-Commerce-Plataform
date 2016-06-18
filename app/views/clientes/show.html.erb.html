@@ -1,0 +1,72 @@
+<!-- CONTENT -->
+	<div id="content"><div class="inner_copy"><div class="inner_copy">&nbsp;</div></div>
+		<div class="indent">
+			<div class="wrapper">
+				<div class="col-1">
+					<h3><b>Seus</b> dados</h3>
+					<br /><br />
+					  <div class="field"><p>
+					    Nome completo: 
+					    <h1><%= @cliente.nome_completo %></h1></p>
+					  </div>
+					  <div class="field"><p>
+					    CPF/CNPJ: &nbsp;
+					    <h1><%= @cliente.cpf_cnpj %></h1></p>
+					  </div>
+					  <div class="field"><p>
+					    Data de nascimento/abertura da empresa: &nbsp;
+					    <h1><%= @cliente.dt_nasc_abertura.strftime("%d/%m/%Y") %></h1></p>
+					  </div>
+					  <div class="field"><p>
+					    E-mail: &nbsp;
+					    <h1><%= @cliente.email %></h1></p>
+					  </div>
+					  <br /><br /><a href="#" onclick="redirecionarURL('<%= edit_cliente_path %>')" class="link1"><em><b>Modificar</b></em></a>
+				</div>
+				<div class="col-2">
+					<div class="box2">
+						<div class="border-top">
+							<div class="left-top-corner">
+								<div class="right-top-corner">
+									<div class="inner">
+										<h4><b>Endereços</b></h4>
+										<ul class="news">
+											<% @cliente.endereco.select{|e| e if e.status.codigo == '0'}.each do |endereco| %>
+											<li><p><a href="<%= edit_endereco_path(endereco) %>">
+													<%= endereco.logradouro %>, <%= endereco.numero %> </a>
+													<%= endereco.complemento.blank? ? '' : '(' + endereco.complemento + ')'%><br />
+														CEP: <%= endereco.cep %><br />
+														<%= endereco.cidade %> / <%= endereco.estado %><br />
+													</p>
+												</li>
+											<% end %>
+										</ul><br />
+										<a href="#" onclick="redirecionarURL('<%= new_endereco_path %>')" class="link1"><em><b>Adicionar</b></em></a>
+										<br />
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="box3">
+						<div class="right-bot-corner">
+							<div class="left-bot-corner">
+								<div class="inner">
+									<h4><b></b>Telefones</h4>
+									<ul class="news">
+										<% @cliente.telefone.select{|t| t if t.status.codigo == '0'}.each do |tel| %>
+										<li>
+											<a href="<%= edit_telefone_path(tel) %>"><p>(<%= tel.ddd %>) <%= tel.telefone %></a></p>
+										</li>
+										<% end %>
+									</ul><br />
+									<a href="#" onclick="redirecionarURL('<%= new_telefone_path %>')" class="link1"><em><b>Adicionar</b></em></a>
+									<br />
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>

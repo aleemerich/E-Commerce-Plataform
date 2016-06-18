@@ -1,0 +1,39 @@
+<!-- CONTENT -->
+	<div id="content"><div class="inner_copy"><div class="inner_copy">&nbsp;</div></div>
+		<div class="indent">
+			<div class="wrapper">
+				<div class="col-1">
+					<!-- 
+					<a href="#" onclick="redirecionarURL('/pedidos/new')" class="link1"><em><b>CRIAR NOVO PEDIDO!</b></em></a>
+					<br /><br /> -->
+					<br /><br />
+					<h3><b>Pedidos</b> em andamento</h3>
+					<ul class="list">
+					<% if @cliente.pedido.select{|p| p if p.status.codigo == '0' or p.status.codigo == '5'}.length != 0 %>
+						<% @cliente.pedido.order('id DESC').select{|p| p if p.status.codigo == '0' or p.status.codigo == '5'}.each do |p| %>
+							<li><a href="<%= pedido_path(p) %>">Pedido <%= "%05d" % p.id %></a> <a style="color:#FF0000" href="<%= pedido_path(p) %>">[ver]</a> (<%= p.status.descricao %>)<br />
+								Criado em: <%= p.created_at.strftime("%d/%m/%Y %H:%M") %>, no valor de <%= number_to_currency(p.total, :separator => ",", :delimiter => ".", :unit => "R$ ") %></li>
+						<% end %>
+					<% else %>
+							<li>Não há pedidos em andamento</li>
+					<% end %>
+					</ul><br /><br />
+					<h3><b>Pedidos</b> anteriores</h3>
+					<ul class="list">
+					<% if @cliente.pedido.select{|p| p if p.status.codigo != '0' and p.status.codigo != '5'}.length != 0 %>
+						<% @cliente.pedido.order('id DESC').select{|p| p if p.status.codigo != '0' and p.status.codigo != '5'}.each do |p| %>
+							<li><a href="<%= pedido_path(p) %>">Pedido <%= "%05d" % p.id %></a> <a style="color:#FF0000" href="<%= pedido_path(p) %>">[ver]</a> (<%= p.status.descricao %>)<br />
+								Criado em: <%= p.created_at.strftime("%d/%m/%Y %H:%M") %>, no valor de <%= number_to_currency(p.total, :separator => ",", :delimiter => ".", :unit => "R$ ") %></li>
+						<% end %>
+					<% else %>
+							<li>Não há pedidos em anteriores</li>
+					<% end %>
+					</ul>
+				</div>
+				<div class="col-2">
+					<br />
+					<%= render :partial => "layouts/lancamentos", :locals => {:produtos => @publico_produtos_recentes} %>
+				</div>
+			</div>
+		</div>
+	</div>

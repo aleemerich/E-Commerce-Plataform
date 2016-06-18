@@ -1,0 +1,37 @@
+<div id="mainFull">
+	<div class="block">
+		<table>
+		  <tr>
+		    <th>Pedido</th>
+		    <th>Codigo Parcela</th>
+		    <th>Data de vencimento</th>
+		    <th>Cliente</th>
+		    <th>Valor</th>
+		    <th>Status</th>
+		    <th style="width: 15%; text-align: center">Acão</th>
+		  </tr>
+		<% @adm_parcela_pedidos.each do |adm_parcela_pedido| %>
+		  <tr onclick="redirecionarURL('/adm/parcela_pedidos/<%= adm_parcela_pedido.id %>')" class="<%= alerta_parcela(adm_parcela_pedido.status.codigo)%>">
+		    <td><a href="<%= adm_pedido_path(adm_parcela_pedido.pedido.id) %>" ><%= "%05d" % adm_parcela_pedido.pedido.id %></a></td>
+		    <td><%= "%05d" % adm_parcela_pedido.id %></td>
+		    <td><%= adm_parcela_pedido.dt_vencimento.strftime("%d/%m/%Y") %></td>
+		    <td><%= adm_parcela_pedido.pedido.cliente.nome_completo %></td>
+		    <td><%= number_to_currency(adm_parcela_pedido.valor, :separator => ",", :delimiter => ".", :unit => "R$ ") %></td>
+		    <td><%= adm_parcela_pedido.status.descricao %></td>
+		    <td style="text-align: center"><%= link_to 'Ver', adm_parcela_pedido %>
+		    </td>
+		  </tr>
+		<% end %>
+		</table>
+		<p>
+			<% if @offset > 0%>
+			  <%= link_to 'Anterior', '/adm/parcela_pedidos/pag/' + (@offset - 20).to_s %> | 
+			  <%= link_to 'Próxima', '/adm/parcela_pedidos/pag/' + (@offset + 20).to_s %>
+			<% else %>
+			  <%= link_to 'Próxima', '/adm/parcela_pedidos/pag/20'%>
+			<% end %>
+		</p>
+		<br />
+	</div>
+<!-- /main -->	
+</div>

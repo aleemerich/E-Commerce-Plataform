@@ -1,0 +1,38 @@
+<div id="mainM">
+	<div class="block">
+	<% @acao = "edit"%>
+	<%= render 'form' %>
+	</div>
+<!-- /main -->	
+</div>
+<div id="sidebarM">
+					
+		<div class="sidemenu">
+			<h3>Informações</h3>
+			<ul>			
+			<% if @adm_cliente.pedido.last().nil? %>	
+				<li><span>Data da última compra</span>Não há compras</li>
+				<li><span>Valor da última compra</span>Não há compras</li>
+				<li><span>Número do Pedido</span>Não há compras</li>
+				<li><span>Valor total já gasto por esse cliente</span>Não há compras</li>
+			<% else %>
+				<li><span>Data da última compra</span><%= @adm_cliente.pedido.last().created_at.strftime("%d/%m/%Y %H:%M") %></li>
+				<li><span>Valor da última compra</span><%= number_to_currency(@adm_cliente.pedido.last().total, :separator => ",", :delimiter => ".", :unit => "R$ ") %></li>
+				<li><span>Número do Pedido</span><a href="/adm/painel/<%= @adm_cliente.pedido.last().id.to_s %>"><%= "%05d" % @adm_cliente.pedido.last().id %></a></li>
+				<li><span>Valor total já gasto por esse cliente</span><%= number_to_currency(@adm_cliente.pedido.sum(:total), :separator => ",", :delimiter => ".", :unit => "R$ ") %></li>
+			<% end %>
+                <br />
+	      </li>
+          </ul>
+		</div>							
+		<div class="sidemenu">
+			<h3>Últimos pedidos</h3>
+			<ul>				
+				<% @adm_cliente.pedido.order('id DESC').limit(5).all.each do |p| %>
+				<li><span><a href="/adm/painel/<%= p.id.to_s %>">[<%= "%05d" % p.id %>]</a> <%= p.created_at.strftime("%d/%m/%Y %H:%M") %></span><%= number_to_currency(p.total, :separator => ",", :delimiter => ".", :unit => "R$ ") %></li>
+				<% end %>
+                <br />
+	      </li>
+         </ul>
+        </div>
+</div>

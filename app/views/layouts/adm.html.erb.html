@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//PT-BR" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<head>
+
+<title>Área Administrativa</title>
+
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+
+<script type="text/javascript" src="http://www.google.com/jsapi" ></script> 
+<script type="text/javascript">
+	google.load("mootools", "1.4.1"); 
+</script>
+
+<%= javascript_include_tag 'MenuMatic_0.68.3-source' %>
+<%= javascript_include_tag 'padrao' %>
+<script type="text/javascript" >
+	window.addEvent('domready', function() {			
+		var myMenu = new MenuMatic();
+	});		
+</script>
+<%= stylesheet_link_tag 'screen' %>
+</head>
+<body onload="mensagem(<%= flash[:notice].blank? ? 'false' : 'true' %>);<%= carga_js %>;">
+<div id="div_mensagem" align="center" style="position: absolute; z-index: 220; background: #CC0000; color: #FFFFFF; width: 95%; visibility: hidden">
+	<table style="width: 100%; border: 0px; background: #CC0000; margin: 0px 0px 0px 0px;">
+		<tr>
+			<td id="td_mensagem_aviso" align="center" style="width:95%; border:0px; background: #CC0000; vertical-align: middle; text-align: center; border-width: 0px; border-style: hidden;">
+			 <%= flash[:notice] %>
+			</td>
+			<td align="center" style="width:5%;border:0px;background: #CC0000;">
+				<img style="border:0px;background-color:transparent" src="/images/fechar3.jpg" onclick="mensagem(false)"/>
+			</td>
+		</tr>
+	</table>
+</div>
+<!-- wrap -->
+<div id="wrap">
+
+	<!-- header -->
+	<div id="header">			
+	
+		<a name="top"></a>
+		
+		<%= render :partial => "layouts/cabecalho" %>
+		
+		<div id="navigation">
+			<ul id="nav">
+					<%= render :partial => "layouts/menu" %>
+            </ul>		
+ 		</div>		
+		
+		<p id="rss-feed"><%= session[:usuario].email %> &nbsp; <a href="/adm/comissoes" class="feed">Extrato</a></p>	
+		
+		<%= render :partial => "layouts/busca" %>
+						
+	<!-- /header -->					
+	</div>
+	
+	<!-- featured --><!-- content -->
+<div id="content-wrap" class="clear">
+
+		<div id="content">
+		<%= yield %>
+		<!-- /content -->	
+		</div>				
+	<!-- /content-wrap -->	
+	</div>
+<!-- /wrap -->
+</div>
+
+<!-- footer -->	
+<div id="footer">	
+
+	<!-- footer-outer -->	
+	<div id="footer-outer" class="clear"><div id="footer-wrap">
+	
+		
+		
+		<!-- footer-bottom -->
+		<div id="footer-bottom">
+	
+			<div class="bottom-left">
+				<p>
+				&copy; 2011 <strong>Copyright <a href="http://www.arich.com.br">ARICH</a></strong>
+				</p>
+			</div>		
+	
+			<div class="bottom-right">
+				<p>		
+					<a href="mailto:contato@arich.com.br">Contato</a> | 
+					<strong><a href="#top" class="back-to-top">Voltar ao topo</a></strong>								
+				</p>
+			</div>
+
+		<!-- /footer-bottom -->		
+		</div>
+	
+	<!-- /footer-outer -->		
+	</div></div>		
+
+<!-- /footer -->
+</div>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-15127404-6']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</body>
+</html>

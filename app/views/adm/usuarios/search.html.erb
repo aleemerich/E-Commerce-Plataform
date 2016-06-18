@@ -1,0 +1,26 @@
+<div id="mainFull">
+	<div class="block">
+		<table>
+		  <tr>
+		    <th>Nome completo</th>
+		    <th>Email</th>
+		    <th>Status</th>
+		    <th style="width: 15%; text-align: center">Acao</th>
+		  </tr>
+		
+		<% @adm_usuarios.each do |adm_usuario| %>
+		  <tr onclick="redirecionarURL('usuarios/<%= adm_usuario.id %>')" class="<%= alerta(adm_usuario.status_id)%>">
+		    <td><%= adm_usuario.nome_completo %></td>
+		    <td><%= adm_usuario.email %></td>
+		    <td><%= adm_usuario.status.descricao %></td>
+		    <td style="text-align: center"><%= link_to 'Ver', adm_usuario %> |
+		    <%= link_to 'Editar', edit_adm_usuario_path(adm_usuario) %> |
+		    <%= link_to 'Apagar', delete_adm_usuario_path(adm_usuario)%></td>
+		  </tr>
+		<% end %>
+		</table>
+		<p><input class="button" type="button" onclick="redirecionarURL('<%= adm_usuarios_path %>')" value=" Voltar a lista de funcionários " /></p>
+		<br />
+	</div>
+<!-- /main -->	
+</div>

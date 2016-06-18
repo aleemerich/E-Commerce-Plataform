@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//PT-BR" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+	<title>Pedido <%= "%05d" % @pedido.id %></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="description" content="Serviço de gráfica rápida" />
+	<meta name="keywords" content="gráfica rápida" />
+	<meta name="author" content="Arich" />
+	<%= stylesheet_link_tag 'style.css' %>
+	<%= javascript_include_tag 'jquery-1.4.2.min.js' %>
+	<%= javascript_include_tag 'cufon-yui.js' %>
+	<%= javascript_include_tag 'cufon-replace.js' %>
+	<%= javascript_include_tag 'Myriad_Pro_400.font.js' %>
+	<%= javascript_include_tag 'Myriad_Pro_600.font.js' %>
+	<%= javascript_include_tag 'NewsGoth_BT_400.font.js' %>
+	<%= javascript_include_tag 'NewsGoth_BT_700.font.js' %>
+	<%= javascript_include_tag 'NewsGoth_Dm_BT_400.font.js' %>	
+	<%= javascript_include_tag 'script.js' %>
+	</head>
+	<body onload="window.print()">
+		<div id="content"><div class="inner_copy"><div class="inner_copy">&nbsp;</div></div>
+			<div class="indent">
+				<div class="wrapper">
+					<div class="col-1">
+					<p>
+						<b>Impressão do demonstrativo do Pedido <%= "%05d" % @pedido.id %></b>
+					</p>
+					<p>
+						<a href="#" onclick="window.print()" class="link1"><em><b>IMPRIMIR!</b></em></a><br />
+					</p>
+					<p style="color: #000">
+						<code id="cupon">
+							<%= montaExtrato(@pedido) %>
+				        </code>
+				    </p>
+				    </div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

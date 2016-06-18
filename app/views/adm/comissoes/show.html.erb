@@ -1,0 +1,56 @@
+<div id="main50">
+	<div class="block">
+		<form>
+			<p>
+				<span>Dados do pedido</span><br /><br />
+			  	Código: <b><%= "%05d" % @adm_pedido.id.to_s %></b><br />
+			  	Data de abertura: <b><%= @adm_pedido.created_at.strftime("%d/%m/%Y %H:%M") %></b><br />
+			  	Status: <b><%= @adm_pedido.status.descricao %></b><br />
+			</p><br />
+			<p>
+				<span>Dados do cliente</span><br /><br />
+				Código: <b><%= "%05d" % @adm_pedido.cliente.id.to_s %></b><br />
+				Nome: <b><a href="<%= adm_cliente_path(@adm_pedido.cliente_id) %>"><%= @adm_pedido.cliente.nome_completo %></a></b> <a href="<%= adm_cliente_path(@adm_pedido.cliente_id) %>">[ver ficha]</a><br />
+				E-mail: <b><%= @adm_pedido.cliente.email %></b><br />
+			</p><br /><br />
+			<span>Lista de produtos</span><br /><br />
+			<table border="0" style="margin-left:0px; width: 100%">
+		       <tr>
+		        <th scope="col">Código</th>
+		        <th scope="col">Item</th>
+		        <th scope="col">Ação</th>
+		      </tr>
+			  <% @adm_pedido.item_pedido.select{|i| i if i.status.codigo == 'IP-0'}.each do |adm_item_pedido| %>
+   		      <tr>
+		      	<td><%= adm_item_pedido.id%></td>
+		      	<td><%= adm_item_pedido.produto.nome%></td>
+		      	<td style="text-align:center">
+		      		<%= link_to 'Excluir', delete_adm_item_pedido_path(@adm_pedido, adm_item_pedido) %>
+		      	</td>
+		      </tr>
+			  <% end %>
+		    </table>
+			<br />
+			<input type="button" onclick="redirecionarURL('<%= adm_item_pedidos_path(@adm_pedido) %>')" value=" Adicionar novo produto " />
+			<p>&nbsp;</p><br />
+			<p>
+				<span>Total deste pedido</span><br /><br />
+				<b style="color:#FF0000; font-size:x-large;"><%= number_to_currency(@adm_pedido.total, :separator => ",", :delimiter => ".", :unit => "R$ ") %></b><br />
+			</p><br />
+			<input class="button" type="button" onclick="redirecionarURL('<%= envio_adm_pedido_path(@adm_pedido) %>')" value=" Fechar este pedido " /> &nbsp; &nbsp;
+			<input class="button" type="button" onclick="redirecionarURL('<%= adm_pedidos_path %>')" value=" Voltar para a lista de pedidos " /> &nbsp; &nbsp;
+			<input class="button" type="button" onclick="redirecionarURL('<%= block_adm_pedido_path(@adm_pedido) %>')" value=" Cancelar este pedido " />
+		</form>
+	</div>
+<!-- /main -->	
+</div>
+<div id="sidebar50">
+					
+		<div class="sidemenu">
+			<h3>Detalhes do Produtos</h3>
+			<p style="color: #000">
+				<code id="cupon">
+					<%= montaExtrato(@adm_pedido) %>
+                </code></p>
+   		</div>							
+</div>

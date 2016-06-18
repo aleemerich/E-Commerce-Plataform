@@ -1,0 +1,43 @@
+<div id="main50">
+	<div class="block">
+			<h4>Total do Pedido:
+			<b><span style="color:#FF0000"><%= number_to_currency(@adm_pedido.total, :separator => ",", :delimiter => ".", :unit => "R$ ") %></span></b></h4>
+			<br />
+		<form>
+				<span>Escolha a forma de parcelamento</span><br /><br />
+				<table border="0" style="margin-left:20px; width: 100%">
+				  <% @adm_parcela_pedidos.each_index do |x| %>
+					      	<td style="text-align:center; vertical-align: middle;"><input class="button" type="button" onclick="redirecionarURL('<%= create_adm_parcela_pedido_path(@adm_pedido, @adm_forma_pagamentos[x]) %>')" value=" Escolher essa forma " /> &nbsp; &nbsp;</td>
+					      	<%= hidden_field_tag 'pagamento_id', @adm_forma_pagamentos[x].id%>
+					      	<td><b><%= @adm_forma_pagamentos[x].descricao %></b><br />
+							<% @adm_parcela_pedidos[x].each do |parcela| %>
+								- Pagamento <%= "%02d" % parcela.nro_parcela%> =  
+								<%= number_to_currency(parcela.valor, :separator => ",", :delimiter => ".", :unit => "R$ ") %>
+								( vencimento: <%= parcela.dt_vencimento <= DateTime.now ? 'Hoje' : parcela.dt_vencimento.strftime("%d/%m/%Y") %>
+								<% if parcela.perc_juros > 0.0 %>
+								 | juros: <%= number_to_percentage((parcela.perc_juros * 100), :precision => 2) %>
+								<% end %>
+								) <br />
+						    <% end %>
+					      	</td>
+					      </tr>
+					    
+				  <% end %>
+			    </table>
+			    <br />
+				  <input class="button" type="button" onclick="redirecionarURL('<%= envio_adm_pedido_path(@adm_pedido) %>')" value=" Voltar " /> &nbsp; &nbsp;
+				  <input class="button" type="button" onclick="redirecionarURL('<%= adm_pedido_path(@adm_pedido) %>')" value=" Voltar ao pedido " /> &nbsp; &nbsp;
+			</form>
+	</div>
+<!-- /main -->	
+</div>
+<div id="sidebar50">
+					
+		<div class="sidemenu">
+			<h3>Detalhes do Produtos</h3>
+			<p style="color: #000">
+				<code id="cupon">
+					<%= montaExtrato(@adm_pedido) %>
+                </code></p>
+   		</div>							
+</div>

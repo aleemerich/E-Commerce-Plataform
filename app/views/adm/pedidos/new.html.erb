@@ -1,0 +1,28 @@
+<div id="mainM">
+	<div class="block">
+		<%= form_for(@adm_pedido) do |f| %>
+		  <% if @adm_pedido.errors.any? %>
+		    <div id="error_explanation">
+		      <h2><%= pluralize(@adm_pedido.errors.count, "error") %> prohibited this adm_produto from being saved:</h2>
+		
+		      <ul>
+		      <% @adm_pedido.errors.full_messages.each do |msg| %>
+		        <li><%= msg %></li>
+		      <% end %>
+		      </ul>
+		    </div>
+		  <% end %>
+		
+		  <div class="field"><p>
+		    <%= f.label :nome, 'Cliente' %><br />
+		    <%= f.collection_select(:cliente_id, Adm::Cliente.order(:nome_completo).all(:conditions => ['status_id = ?', Status.where(["codigo = '0' and area_id = ?", Area.select('id').where(["codigo = 2"]).first]).first.id]), :id, :nome_completo) %></p>
+		  </div>
+		  <div class="actions"><p>
+		    <%= f.submit :value => " Próximo ", :class => "button" %> &nbsp &nbsp 
+			<input class="button" type="button" onclick="redirecionarURL('<%= adm_pedidos_path %>')" value=" Voltar " />
+			</p>
+		  </div>
+		<% end %>
+	</div>
+<!-- /main -->	
+</div>

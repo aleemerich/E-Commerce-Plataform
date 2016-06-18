@@ -1,0 +1,53 @@
+<!-- CONTENT -->
+	<div id="content"><div class="inner_copy"><div class="inner_copy">&nbsp;</div></div>
+		<div class="indent">
+			<div class="wrapper">
+				<div class="col-1">
+					<h3>Cadastre um <b>novo endereço</b></h3>
+					<%= form_for(@telefone, :url => '/telefones', :method => :post, :html => {:id => 'Xcontacts-form'}) do |f| %>
+					<fieldset>
+		  			   <%= f.hidden_field :cliente_id, :value => session[:cliente].id %>
+					   <div class="field"><p>
+					    <label>DDD</label>: &nbsp;
+					    <%= f.text_field :ddd, :size => 13 %></p>
+					  </div>
+					  <div class="field"><p>
+					   <label>Telefone</label>: &nbsp;
+					    <%= f.text_field :telefone, :size => 33 %></p>
+					  </div>
+					  <br /><br />
+					  <div style="text-align:left">
+						<a href="#" onclick="redirecionarURL('/clientes')" class="link1"><em><b>VOLTAR</b></em></a> <br /> <br /> <br />
+					    <a href="#" onclick="document.getElementById('Xcontacts-form').submit()" class="link1"><em><b>ENVIAR!</b></em></a> &nbsp &nbsp 
+					  </div>
+					</fieldset>
+					<% end %>
+				</div>
+				<div class="col-2">
+					<br />
+					<div class="box2">
+						<div class="border-top">
+							<div class="left-top-corner">
+								<div class="right-top-corner">
+									<div class="inner">
+										<h4><b>É bom saber...</b></h4>
+										<ul class="news">
+											<li><a href="#">Sobre o cadastro </a>
+												<p>Isso é vital para que saibamos quem é você e possamos garantir sua segurança</p>
+											</li>
+											<li><a href="#">Vocês ficarão enviando e-mails?</a>
+												<p>Só enviaremos e-mail se você desejar. O que nos interessa é que você goste da gente, não que fique exauto de tanto ouvir falar de nós</p>
+											</li>
+											<li><a href="#">Sobre o cadastro </a>
+												<p>Isso é vital para que saibamos quem é você e possamos garantir sua segurança</p>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>

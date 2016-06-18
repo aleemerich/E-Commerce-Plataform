@@ -1,0 +1,21 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//PT-BR"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+	  <meta http-equiv="Content-Type" content="text/html">
+	  <title>Confirmação de Pagamento</title>
+	  <link href="http://rmgraficarapida.com.br/stylesheets/style.css" media="screen" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+<h1><b>Prezado <%= @pagamento.parcela_pedido.pedido.cliente.nome_completo %>,</b></h1>
+<p>Temos a satisfação de informar que o pagamento <%= "%05d" % @pagamento.id %> referente ao pedido <%= "%05d" % @pagamento.parcela_pedido.pedido.id %> foi confirmado.</p>
+<p>Informamos também que seu pedido já foi colocado na fila de execução e em breve será processado.</p>
+<br />
+<br />
+Grato.
+<br />
+<br />
+<h2>RM Gráfica Rápida</h2>
+<br /> <br />
+  </body>
+</html>

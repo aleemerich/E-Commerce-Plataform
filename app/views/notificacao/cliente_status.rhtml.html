@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//PT-BR"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+	  <meta http-equiv="Content-Type" content="text/html">
+	  <title>Mudança de STATUS</title>
+	  <link href="http://www.rmgraficarapida.com.br/stylesheets/style.css" media="screen" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+<h1><b>Prezado <%= @pedido.cliente.nome_completo %>,</b></h1>
+<p>Informamos que o pedido <%= "%05d" % @pedido.id %> teve alterações. Atualmente ele se encontra com o STATUS: <b>"<%= @status %>"</b></p>
+<br />
+<p>Grato.</p>
+<br />
+<h2>RM Gráfica Rápida</h2>
+<span style="font-size:small">Horário de Funcionamento:<br />
+	- Seg/Sex: 08:30 às 18:30<br />
+	- Sab: 09:00 às 13:00
+	</span>
+<br /> <br />
+  </body>
+</html>

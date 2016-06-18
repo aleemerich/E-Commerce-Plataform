@@ -1,0 +1,44 @@
+<% if !session[:cliente] %>
+					<div class="box3">
+						<div class="right-bot-corner">
+							<div class="left-bot-corner">
+								<div class="inner">
+									<h4><b>Acesse</b> sua conta</h4>
+									<%= form_tag "/autenticacao", :method => :post, :id => 'login-form' %>
+										<fieldset>
+											<div class="field"><label>E-mail:</label><input name="email" id="email" type="text" /></div>
+											<div class="field"><label>Senha:</label><input name="pass" id="pass" type="password" /></div>
+												<div class="field1"><a name="login"></a>
+													<a href="#login" onclick="document.getElementById('login-form').submit()"><em><b>Enviar!<span>Enviar!</span></b></em></a>	
+												</div>
+											<ul><li><a href="#login" onclick="alert('Se não lembra de sua senha, entre em contato conosco')">Esqueceu sua senha?</a></li><li class="last"><a href="/clientes/new">Quero me registrar</a></li></ul>
+										</fieldset>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+<% else %>
+					<div class="box3">
+						<div class="right-bot-corner">
+							<div class="left-bot-corner">
+								<div class="inner">
+									<h4><b>Categorias</b></h4>
+									<fieldset>
+										<ul class="news">
+											<% Adm::Categoria.where("categoria_pai_id is null").order(:ordem).all.each do |c| %>
+											<li class="last"><a href="/produtos/categoria/<%= c.id.to_s %>"><%= c.descricao %></a></li>
+											<% end %>
+										</ul>
+									</fieldset>
+								</div>
+							</div>
+						</div>
+					</div>
+<% end %>
+<br /><br />
+						<!-- INICIO CODIGO PAGSEGURO -->
+						<center>
+							<a href='https://pagseguro.uol.com.br' target='_blank'><img alt='Logotipos de meios de pagamento do PagSeguro' src='/images/pag_seguro3.png' border='0' title="Sistema de pagamentos PAG SEGURO, clique e conheça mais sobre como podemos garantir sua compra."></a>
+						</center>
+						<!-- FINAL CODIGO PAGSEGURO -->					

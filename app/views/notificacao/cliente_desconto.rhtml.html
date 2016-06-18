@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//PT-BR"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+	  <meta http-equiv="Content-Type" content="text/html">
+	  <title>Análise de desconto</title>
+	  <link href="http://www.rmgraficarapida.com.br/stylesheets/style.css" media="screen" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+<h1><b>Prezado <%= @pedido.cliente.nome_completo %>,</b></h1>
+<p>Informamos que a análise de desconto foi feita para o pedido <%= "%05d" % @pedido.id %>. Segue abaixo o resultado:</p>
+<br />
+<h3>Valor de deconto concedido</h3>
+<p><i><%= number_to_currency(@pedido.valor_desconto, :separator => ",", :delimiter => ".", :unit => "R$ ") %></i></p>
+<% if !@pedido.justificativa_desconto.blank? %>
+<h3>Motivo para o desconto dado</h3>
+<p><i>"<%= @pedido.justificativa_desconto %>"</i></p>
+<% end %>
+<br /><br /><br />
+<p>Grato.</p>
+<br />
+<h2>RM Gráfica Rápida</h2>
+<br /> <br />
+  </body>
+</html>

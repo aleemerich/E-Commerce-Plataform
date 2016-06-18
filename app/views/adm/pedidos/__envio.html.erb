@@ -1,0 +1,91 @@
+<div id="main50">
+<!--
+			<p>
+		      <input id="btn_desejo" class="button" type="button" onclick="ocultaFormulario()" value=" Solicitar frete " /> &nbsp &nbsp 
+		      <input id="btn_prosseguir_topo" class="button" type="button" onclick="" value=" Prosseguir " /> &nbsp &nbsp 
+			  <input id="btn_volta_topo" class="button" type="button" onclick="redirecionarURL('<%= adm_pedido_path(@adm_pedido) %>')" value=" Voltar ao pedido " /> &nbsp; &nbsp;
+		    </p>
+		    , :style => 'visibility: hidden;'.html_safe}
+-->
+	<div class="block">
+		<%= form_for(@adm_pedido, :html => {:id => 'edit_adm_pedido'})  do |f| %>
+		  <% if @adm_pedido.errors.any? %>
+		    <div id="error_explanation">
+		      <h2><%= pluralize(@adm_pedido.errors.count, "error") %> prohibited this adm_cliente from being saved:</h2>
+		
+		      <ul>
+		      <% @adm_pedido.errors.full_messages.each do |msg| %>
+		        <li><%= msg %></li>
+		      <% end %>
+		      </ul>
+		    </div>
+		  <% end %>
+		  <%= f.hidden_field :endereco_id, :value => '' %>
+		  <%= f.hidden_field :valor_envio, :value => 0.0 %>
+		  <%= f.hidden_field :forma_envio_id, :value => '' %>
+			<br /><br />
+			<span>Escolha o endereço</span><br /><br />
+			<table border="0" style="margin-left:0px; width: 100%">
+			  <% @adm_enderecos.each do |endereco| %>
+   		      <tr>
+		      	<td style="text-align:center"><%= radio_button "pedido", "endereco_id", endereco.id.to_s + ';' + endereco.cep, :onclick => "getCEP(" + endereco.id.to_s + endereco.cep + ")" %></td>
+		      	<td><%= endereco.logradouro.upcase%>
+		      		<%= endereco.numero.blank? ? 'S/N' : ', ' + endereco.numero.upcase%> 
+		      		<%= endereco.complemento.blank? ? '' : ' (' + endereco.complemento.upcase + ')'%>
+		        </td>
+		      	<td style="text-align:center">
+   				    <%= endereco.cidade %>
+		      	</td>
+		      	<td style="text-align:center">
+   				    <%= endereco.estado %>
+		      	</td>
+		      	<td style="text-align:center">
+   				    <%= endereco.cep %>
+		      	</td>
+		      </tr>
+			  <% end %>
+		    </table>
+			<br />
+			<input type="button" onclick="redirecionarURL('<%= adm_cliente_path(@adm_pedido.cliente_id) %>')" value=" Adicionar novo endereço " />
+			<p>&nbsp;</p><br />
+			<span>Escolha serviço</span><br /><br />
+			<table border="0" style="margin-left:0px; width: 100%">
+			  <% @adm_forma_envios.each do |forma_envio| %>
+   		      <tr>
+		      	<td style="text-align:center"><%= radio_button "forma", "envio", forma_envio.codigo + ';' + forma_envio.funcao_envio + ';' + forma_envio.id.to_s, :onclick => "getServico('" + forma_envio.codigo + forma_envio.funcao_envio + forma_envio.id.to_s + "')" %></td>
+		      	<td><%= forma_envio.descricao.upcase%> (<%= forma_envio.empresa %>)</td>
+		      </tr>
+			  <% end %>
+		    </table>
+			<br />
+			<span id="mensagem"></span>
+			<p>&nbsp;</p><br />
+		    <div class="actions">
+		      <input class="button" type="submit" value=" Solicitar frete e prosseguir " /> &nbsp &nbsp 
+		      <input class="button" type="button" onclick="anularFrete()" value=" Prosseguir sem solicitar frete " /> &nbsp &nbsp 
+			  <input class="button" type="button" onclick="redirecionarURL('<%= adm_pedido_path(@adm_pedido) %>')" value=" Voltar ao pedido " /> &nbsp; &nbsp;
+		    </div>
+		<% end %>
+	</div>
+<!-- /main -->	
+</div>
+<%= javascript_include_tag 'frete' %>
+<%= javascript_include_tag 'ajax' %>
+<script>
+	// Colhendo informações so servidor
+	var atributos = new Array();
+	atributos[0] = '' // Cep de Destino
+	atributos[1] = '' // Codigo do Servico
+	atributos[2] = '' // Funcao
+	atributos[3] = '<%= @adm_pedido.id %>' // Pedido_id
+</script>
+<div id="sidebar50">
+					
+		<div class="sidemenu">
+			<h3>Detalhes do Produtos</h3>
+			<p style="color: #000">
+				<code id="cupon">
+					<%= montaExtrato(@adm_pedido) %>
+                </code></p>
+   		</div>							
+</div>

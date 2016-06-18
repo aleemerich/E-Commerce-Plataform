@@ -1,0 +1,28 @@
+<div id="mainFull">
+	<div class="block">
+		<table>
+		  <tr>
+		    <th>Código</th>
+		    <th>Data do Cadastro</th>
+		    <th>Nome Completo</th>
+		    <th>Status</th>
+		    <th style="width: 15%; text-align: center">Acão</th>
+		  </tr>
+
+		<% @adm_produtos.each do |adm_produto| %>
+		  <tr onclick="redirecionarURL('<%= adm_produto.id %>')" class="<%= alerta(adm_produto.status.codigo)%>">
+		    <td><%= "%07d" %adm_produto.id %></td>
+		    <td style="width: 15%"><%= adm_produto.created_at.strftime("%d/%m/%Y") %></td>
+		    <td><%= adm_produto.nome %></td>
+		    <td><%= adm_produto.status.descricao %></td>
+		    <td style="text-align: center"><%= link_to 'Ver', adm_produto %> |
+		    <%= link_to 'Editar', edit_adm_produto_path(adm_produto) %> |
+		    <%= link_to 'Apagar', delete_adm_produto_path(adm_produto)%></td>
+		  </tr>
+		<% end %>
+		</table>
+		<br />
+	</div>
+<!-- /main -->	
+</div>
+

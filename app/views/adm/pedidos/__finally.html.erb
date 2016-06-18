@@ -1,0 +1,80 @@
+<div id="main50">
+	<div class="block">
+		<form>
+			<% if params[:pagamento_pedido_id]%>
+			<h3 style="color:#C67114">Seu pagamento foi gravado com sucesso!</h3>
+			<% else %>
+			<h3 style="color:#C67114">Seu pedido foi gravado com sucesso!</h3>
+			<% end %>
+			<h3></h3>
+			<p>
+				<span>A partir de agora você pode acompanhar seu pedido, parcelas e pagamentos 
+				utilizando nosso sistema. Caso tenha dúvida, entre em contato conosco
+				através do e-mail <a href="mailto:contato@arich.com.br">contato@arich.com.br</a>. 
+				Aconsenhamos imprimir essa página para guardar as informações abaixo
+				<br /><br />
+				</span>
+			</p>
+			<p>
+				<span>Dados do pedido</span><br /><br />
+			  	Código do pedido: <b style="color:#FF0000; font-size:x-large;"><%= "%05d" % @adm_pedido.id.to_s %></b><br />
+			  	Data de criação: <b><%= @adm_pedido.created_at.strftime("%d/%m/%Y %H:%M") %></b><br />
+			  	Valor do frete: <b><%= number_to_currency(@adm_pedido.total, :separator => ",", :delimiter => ".", :unit => "R$ ") %></b><br />
+			  	Valor Total: <b><%= number_to_currency(@adm_pedidovalor_envio, :separator => ",", :delimiter => ".", :unit => "R$ ") %></b><br />
+			  	Status: <b><%= @adm_pedido.status.descricao %></b><br />
+			  	Detalhes do pedido: VIDE AO LADO
+			</p><br />
+			<p>
+				<span>Dados do cliente</span><br /><br />
+				Código: <b><%= "%05d" % @adm_pedido.cliente.id.to_s %></b><br />
+				Nome Completo: <b><a href="<%= adm_cliente_path(@adm_pedido.cliente.id) %>">
+						<%= @adm_pedido.cliente.nome_completo %></a></b> 
+						<a href="<%= adm_cliente_path(@adm_pedido.cliente.id) %>">[ver ficha]</a><br />
+				E-mail: <b><%= @adm_pedido.cliente.email %></b><br />
+			</p><br />
+			<p>
+				<span>Dados de envio</span><br /><br />
+			<% if @adm_pedido.endereco.nil? %>
+				Esse pedido não será enviado. Você precisará retirá-lo pessoalmente.
+			<% else %>		
+				Logradouro: <b><%= @adm_pedido.endereco.logradouro %></b><br />
+				Número: <b><%= @adm_pedido.endereco.numero %></b><br />
+				Complemento: <b><%= @adm_pedido.endereco.complemento %></b><br />
+				Cidade: <b><%= @adm_pedido.endereco.cidade %></b><br />
+				Estado: <b><%= @adm_pedido.endereco.estado %></b><br />
+				CEP: <b><%= @adm_pedido.endereco.cep %></b><br />
+			<% end %>
+			</p><br />
+			<p>
+				<span>Dados das Parcelas</span><br /><br />
+				<% @adm_pedido.parcela_pedido.each do |parcela| %>
+								- Parcela <%= "%02d" % parcela.nro_parcela%> =  
+								<%= number_to_currency(parcela.valor, :separator => ",", :delimiter => ".", :unit => "R$ ") %>
+								(vencimento: <%= parcela.dt_vencimento <= DateTime.now ? 'Hoje' : parcela.dt_vencimento.strftime("%d/%m/%Y") %>, 
+								status: <%= parcela.status.descricao %> ) <br />
+				<% end%>
+			</p><br /><br />
+			<% if params[:pagamento_pedido_id] %>
+			<p>
+				<span>Dado dos Pagamento</span><br /><br />
+				Empresa: <b><%= @adm_pagamento_pedido.pagamento_pedido_empresa.nome %></b><br />
+				Site: <b><a href="<%= @adm_pagamento_pedido.pagamento_pedido_empresa.url_site %>" target="_blanck" ><%= @adm_pagamento_pedido.pagamento_pedido_empresa.url_site.html_safe %></a></b><br />
+				Valor Recebido: <b><%= number_to_currency(@adm_pagamento_pedido.valor, :separator => ",", :delimiter => ".", :unit => "R$ ") %></b><br />
+			</p><br /><br />
+			<% end %>
+
+  	      	<input class="button" type="button" onclick="redirecionarURL('<%= adm_pedido_path(@adm_pedido) %>')" value=" Voltar ao pedido " /> &nbsp; &nbsp; 
+		</form>
+	</div>
+<!-- /main -->	
+</div>
+<div id="sidebar50">
+					
+		<div class="sidemenu">
+			<h3>Detalhes do Pedido</h3>
+			<p style="color: #000">
+				<code id="cupon">
+					<%= montaExtrato(@adm_pedido) %>
+                </code></p>
+   		</div>							
+</div>

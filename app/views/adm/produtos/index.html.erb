@@ -1,0 +1,36 @@
+<div id="mainFull">
+	<div class="block">
+		<table>
+		  <tr>
+		    <th>Código</th>
+		    <th>Nome</th>
+		    <th>Valor Máximo</th>
+		    <th>Valor Mínimo</th>
+		    <th>Status</th>
+		    <th style="width: 15%; text-align: center">Acão</th>
+		  </tr>
+		<% @adm_produtos.each do |adm_produto| %>
+		  <tr onclick="redirecionarURL('produtos/<%= adm_produto.id %>')">
+		    <td><%= "%07d" % adm_produto.id %></td>
+		    <td><%= adm_produto.nome %></td>
+		    <td><%= number_to_currency(adm_produto.valor_max, :separator => ",", :delimiter => ".", :unit => "R$ ") %></td>
+		    <td><%= number_to_currency(adm_produto.valor_min, :separator => ",", :delimiter => ".", :unit => "R$ ") %></td>
+		    <td><%= adm_produto.status.descricao %></td>
+		    <td style="text-align: center"><%= link_to 'Ver', adm_produto %> | 
+		    <%= link_to 'Editar', edit_adm_produto_path(adm_produto) %> | 
+		    <%= link_to 'Apagar', delete_adm_produto_path(adm_produto), :confirm => 'Tem certeza?', :method => :delete %></td>
+		  </tr>
+		<% end %>
+		</table>
+		<p>
+			<% if @offset > 0%>
+			  <%= link_to 'Anterior', '/adm/produtos/pag/' + (@offset - 20).to_s %> | 
+			  <%= link_to 'Próxima', '/adm/produtos/pag/' + (@offset + 20).to_s %>
+			<% else %>
+			  <%= link_to 'Próxima', '/adm/produtos/pag/20'%>
+			<% end %>
+		</p>
+		<br />
+	</div>
+<!-- /main -->	
+</div>

@@ -1,0 +1,37 @@
+<!-- HEADER -->
+<div id="header" <%= params[:layout] != 'index' ? 'style="height:150px"'.html_safe : '' %>>
+		<div class="row-1">
+			<div class="fleft"><a href="/"><img src="/images/logo.png" alt="" /></a></div>
+			<div class="fright">
+				<ul>
+					<% if session[:cliente] %>
+					<li style="vertical-align: middle"><%= session[:cliente].nome_completo %> <a href="/clientes">[meus dados]</a> <a href="/logoff" style="color:#FF0000">[sair]</a></li>
+					<% end %>
+					<li><a href="/"><img src="/images/icon1<%= params[:layout] == 'index' ? '-act' : '' %>.gif" alt="" /></a></li>
+					<li><a href="/contato"><img src="/images/icon2<%= params[:layout] == 'contato' ? '-act' : '' %>.gif" alt="" /></a></li>
+					<li><a href="/produtos"><img src="/images/icon3<%= params[:layout] == 'produtos' ? '-act' : '' %>.gif" alt="" /></a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="row-2">
+			<div class="left">
+				<ul>
+					<%= render :partial => "layouts/menu_publico_top" %>
+				</ul>
+			</div>
+		</div>
+		<% if params[:layout] == 'index' %>
+		<div class="row-3">
+			<div class="inside">
+				<h2>GRÁFICA<b>RÁPIDA</b></h2>
+				<p>Faça agora mesmo seu pedido de impressão em formato A3 ou A4 com opções variadas (cor, encadernação e muito mais). Atendemos todas as áreas do Brasil atendidas pelos Correios. Confira! </p>
+				<%= form_tag "/produtos/busca", :id => "search-form" %>
+					<fieldset>
+					  <label>BUSQUE:</label><input id="parametro" name="parametro" type="text" /><a href="#" onclick="document.getElementById('search-form').submit()" class="link1"><em><b>OK</b></em></a>
+					</fieldset>
+				</form>
+			</div>
+		</div>
+		<div class="extra"><img src="/images/header-img.png" alt="" /></div>
+		<% end %>
+</div>

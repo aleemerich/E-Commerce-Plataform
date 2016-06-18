@@ -1,0 +1,19 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//PT-BR"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+	  <meta http-equiv="Content-Type" content="text/html">
+	  <title>Confirmacao de Cadastro</title>
+  </head>
+  <body>
+<h2><b>Bem vindo a RM Gráfica Rápida, <%= @cliente.nome_completo %></b></h2>
+<p> É preciso que você confirme seu cadastro, clicando na URL abaixo ou copiando/colando essa URL no seu navegador:</p>
+<p><h2>	<b><a href="http://www.rmgraficarapida.com.br/validacao/<%= @cliente.chave_autenticacao %>">http://www.rmgraficarapida.com.br/validacao/<%= @cliente.chave_autenticacao %></a></h2></b></p> <br />
+<p>	Esse procedimento é necessário para inibir cadastros falsos.</p> <br />
+<p> Agradecemos pelo seu cadastro e espero vê-lo em breve</p>
+<br />
+<br />
+<h2>RM Gráfica Rápida</h2>
+<br /> <br />
+  </body>
+</html>

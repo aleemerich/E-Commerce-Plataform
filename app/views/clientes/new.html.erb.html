@@ -1,0 +1,89 @@
+<!-- CONTENT -->
+	<div id="content"><div class="inner_copy"><div class="inner_copy">&nbsp;</div></div>
+		<div class="indent">
+			<div class="wrapper">
+				<div class="col-1">
+					<h3><b>Faça</b> seu cadastro</h3>
+					<%= form_for(@cliente, :url => '/clientes', :method => :post, :html => {:id => 'Xcontacts-form'}) do |f| %>
+						<fieldset>
+ 					      <div class="field"><p>
+ 					      	<label>Nome completo</label><br />
+						    <%= f.text_field :nome_completo, :size => 63 %></p>
+						  </div>
+						  <div class="field"><p>
+ 					      	<label>CPF/CNPJ</label><br />
+						    <%= f.text_field :cpf_cnpj, :size => 63 %></p>
+						  </div>
+						  <div class="field"><p>
+ 					      	<label>Data de nascimento/abertura da empresa</label><br />
+						    <%= f.date_select :dt_nasc_abertura, :order => [:day, :month, :year], :use_month_names => ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'], :start_year => 1900, :end_year => Time.now.year %></p>
+						  </div>
+						  <div class="field"><p>
+ 					      	<label>E-mail</label><br />
+						    <%= f.text_field :email, :size => 50 %></p>
+						  </div>
+						  <div class="field"><p>
+ 					      	<label>Senha</label><br />
+						    <%= f.password_field :senha %></p>
+						  </div><br /><br />
+						  <script type="text/javascript" src="http://cidades-estados-js.googlecode.com/files/cidades-estados-1.2-utf8.js"></script>
+						  <div class="field"><p>
+						    <label>Endereço</label><br />
+						    Logradouro: <%= text_field_tag 'adm_endereco[logradouro]', nil, :size => 50 %><br /><br />
+						    Número: <%= text_field_tag 'adm_endereco[numero]', nil, :size => 5 %> &nbsp; &nbsp;  
+						    Complemento: <%= text_field_tag 'adm_endereco[complemento]', nil,:size => 23 %><br /><br />
+						    CEP: <%= text_field_tag 'adm_endereco[cep]', nil, :size => 15 %><br /><br /> 
+						    Estado: <%= text_field_tag 'adm_endereco[estado]', nil%> &nbsp; &nbsp; 
+						    Cidade: <%= text_field_tag 'adm_endereco[cidade]', nil%>
+							<script language="JavaScript" type="text/javascript" charset="utf-8">
+						        new dgCidadesEstados({
+						          cidade: document.getElementById('adm_endereco_cidade'),
+						          estado: document.getElementById('adm_endereco_estado'),
+								  change: true
+						        })
+						  	</script>
+						    </p><br /><br />
+						  </div>
+						   <div class="field"><p>
+						    <label>Telefone</label><br />
+						    DDD: <%= text_field_tag 'adm_telefone[ddd]', nil, :size => 3 %> &nbsp; &nbsp; 
+						    Número: <%= text_field_tag 'adm_telefone[telefone]', nil, :size => 15 %><br />
+						    </p>
+						  </div>
+						  <div style="text-align:left">
+						    <a href="#" onclick="document.getElementById('Xcontacts-form').submit()" class="link1"><em><b>ENVIAR!</b></em></a> &nbsp &nbsp 
+						  </div>
+						</fieldset>
+					<% end %>
+				</div>
+				<div class="col-2">
+					<br />
+					<div class="box2">
+						<div class="border-top">
+							<div class="left-top-corner">
+								<div class="right-top-corner">
+									<div class="inner">
+										<h4><b>É bom saber...</b></h4>
+										<ul class="news">
+											<li><a href="#">Porque preciso me cadastrar?</a>
+												<p>Isso é vital para que saibamos quem é você e possamos garantir ao menos um canal de comunicação válido para sua segurança.</p>
+											</li>
+											<li><a href="#">Porque tenho que informar meu CPF ou o CNPJ da minha empresa?</a>
+												<p>Ao informar seu CPF ou CNPJ você nos fornece um meio de comprovar suas informações.</p>
+											</li>
+											<li><a href="#">Porque preciso informar meu e-mail?</a>
+												<p>Seu e-mail é a chave principal de acesso em nossos sitemas e será usado toda vez que precisar se autenticar em nosso site para fazer compras ou conferir seus pedidos.</p>
+											</li>
+											<li><a href="#">Preciso preencher dados de endereço ou os dados de telefone?</a>
+												<p>Esses dados não são obrigatório nesse cadastro inicial. Apenas serão obrigatório se você for requisitar o serviço de entrega (dados de endereço) ao fazer um pedido conosco ou para que possamos entrar em contato em caso de dúvidas (dados telefônicos).</p>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>

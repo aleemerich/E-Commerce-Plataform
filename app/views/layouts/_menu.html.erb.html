@@ -1,0 +1,27 @@
+<!-- 
+				<li id="<%= (@layout[0] == "painel") ? "current":'' %>"><a href="/adm/painel">Painel</a></li>
+				<li id="<%= (@layout[0] == "pedido") ? "current":'' %>"><a href="/adm/pedidos">Pedidos</a></li>
+				<li id="<%= (@layout[0] == "parcela") ? "current":'' %>"><a href="/adm/parcela_pedidos">Parcelas</a></li>
+				<li id="<%= (@layout[0] == "pagamento") ? "current":'' %>"><a href="/adm/pagamento_pedidos">Pagamentos</a></li>
+				<li id="<%= (@layout[0] == "cliente") ? "current":'' %>"><a href="/adm/clientes">Clientes</a></li>
+				<li id="<%= (@layout[0] == "produto") ? "current":'' %>"><a href="/adm/produtos">Produtos</a></li>				
+                <li id="<%= (@layout[0] == "funcionario") ? "current":'' %>"><a href="/adm/usuarios">Funcionários</a></li>
+                <li><a href="/adm/logoff"><span style="color:#F00">sair</span></a></li>
+-->	
+				<li><a href="/adm/painel">Pedidos</a>
+					<ul>
+						<li><a href="/adm/painel">Painel</a></li>
+						<li><a href="/adm/pedidos">Pedidos</a></li>
+						<li><a href="/adm/parcela_pedidos">Parcelas</a></li>
+						<li><a href="/adm/pagamento_pedidos">Pagamentos</a></li>
+					</ul>
+				</li>
+				<li><a href="/adm/clientes">Clientes</a></li>
+				<li><a href="/adm/produtos">Produtos</a>				
+					<ul>
+						<li><a href="/adm/categorias">Categorias</a></li>
+						<li><a href="/adm/produtos">Produtos</a></li>
+					</ul>
+				</li>
+                <li><a href="/adm/usuarios">Funcionários</a></li>
+                <li><a href="/adm/logoff"><span style="color:#F00">sair</span></a></li>

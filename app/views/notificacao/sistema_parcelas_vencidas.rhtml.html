@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//PT-BR"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+	  <meta http-equiv="Content-Type" content="text/html">
+	  <title>Relatório de Verificação das Parcelas Vencidas</title>
+  </head>
+  <body>
+<h2><b>Execução de verificação de parcelas vencidas realizadas.</b></h2>
+<% if @parcelas.length == 0 %>
+<p><b>Não foi encontrado nenhuma parcela vencida</b></p><br />
+<% else %>
+<p><b>Foram encontradas as seguintes parecelas vencidas</b>
+	<ul>
+	<% @parcelas.each do |p| %>
+		<li>
+			Parcela código <%= "%07d" % p.id %>:<br />
+			- Vencimento: <%= p.dt_vencimento.strftime("%d/%m/%Y")%><br />
+			- Valor: <%= number_to_currency(p.valor, :separator => ",", :delimiter => ".", :unit => "R$ ") %><br />
+			- Cliente: <%= p.pedido.cliente.nome_completo %><br />
+			- Pedido: <%= "%05d" % p.pedido.id %><br /><br />
+		</li>
+	<% end%>
+	</ul>
+</p><br />
+<% end %>
+<p> Grato.</p>
+<br />
+ </body>
+</html>

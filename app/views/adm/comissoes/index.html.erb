@@ -1,0 +1,79 @@
+<div id="main">
+	<div class="block">
+		<table>
+		  <tr>
+		    <th>Data do Pedido</th>
+		    <th>Pedido</th>
+		    <th>Item Pedido</th>
+		    <th>Item Pedido ($)</th>
+		    <th>Comissão</th>
+		    <th>Saldo</th>
+		  </tr>
+		  <tr>
+		    <td colspan="5" style="text-align:right">Saldo incial</td>
+		    <td><%= number_to_currency(@extrato_saldo_inicial, :separator => ",", :delimiter => ".", :unit => "R$ ") %></td>
+		  </tr>
+		  <% for dia in 1..31 %>
+	        <% @extrato_pedidos.select{|e| e if e['created_at'].to_datetime.day == dia}.each do |extrato_pedido| %>
+	          <tr onclick="redirecionarURL('/adm/painel/<%= extrato_pedido['id']%>')" class="">
+	            <td><%= extrato_pedido['created_at'].to_datetime.strftime("%d/%m/%Y") %></td>
+	            <td><%= "%05d" % extrato_pedido['id'] %></td>
+	            <td><%= "%05d" % extrato_pedido['item_pedido_id'] %></td>
+	            <td><%= number_to_currency(extrato_pedido['valor_total'], :separator => ",", :delimiter => ".", :unit => "R$ ") %></td>
+	          <!-- <td></td> -->
+	            <td><%= number_to_currency(extrato_pedido['valor_comissao'], :separator => ",", :delimiter => ".", :unit => "R$ ") %> 
+	            	<span style="font-size: xx-small"> ( <%= number_to_percentage((extrato_pedido['perc_comissao'] * 100), :precision => 2) %> )</span></td>
+	            <td><%= number_to_currency(@saldo_corrente += extrato_pedido['valor_comissao'].to_f, :separator => ",", :delimiter => ".", :unit => "R$ ") %></td>
+	          </tr>
+  	        <% end %>  
+			<% @extrato_pagamentos.select{|e| e if e.created_at.day == dia}.each do |extrato_pagamento| %>
+			  <tr>
+			    <td style="color:#FF0000"><%= extrato_pagamento.created_at.strftime("%d/%m/%Y") %></td>
+			    <td style="color:#FF0000" colspan="3">Pagamento</td>
+			    <td style="color:#FF0000"><%= number_to_currency(extrato_pagamento.valor_comissao, :separator => ",", :delimiter => ".", :unit => "R$ ") %></td>
+			    <td><%= number_to_currency(@saldo_corrente += extrato_pagamento.valor_comissao, :separator => ",", :delimiter => ".", :unit => "R$ ") %></td>
+			  </tr>
+			<% end %>
+		  <% end %>
+		    <td colspan="5" style="text-align:right">Saldo final</td>
+		    <td><%= number_to_currency(@extrato_saldo_final, :separator => ",", :delimiter => ".", :unit => "R$ ") %></td>
+		</table>
+		<br />
+	</div>
+<!-- /main -->	
+</div>
+<div id="sidebar"> 
+    <div class="sidemenu"> 
+      <h3>Mês atual</h3> 
+      <ul> 
+        <li><span>Pedidos feitos</span><%= @extrato_pedidos.count.to_s %></li> 
+        <li><span>Receita do mês</span><%= number_to_currency(receita_empresa(@extrato_pedidos), :separator => ",", :delimiter => ".", :unit => "R$ ") %></li> 
+      </ul> 
+    </div> 
+    <div class="sidemenu"> 
+      <h3>Comissão</h3> 
+      <ul> 
+        <li><span>Comissão Arich</span><%= number_to_currency(@extrato_saldo_final, :separator => ",", :delimiter => ".", :unit => "R$ ") %></li> 
+        <br /><br /><br />				
+        Veja também outros meses: <br /> 
+        <select onChange="javascript:changeLocation(this)"> 
+        	<option value="">Selecione</option>
+        <% @select_anteriores.each do |s|%>
+		  	<option value="/adm/comissoes/<%= s['ano'] %>/<%= s['mes']%>"><%= s['mes'] %>/<%= s['ano']%></option> 
+		<% end %>
+		</select> 
+		<script>
+		function changeLocation(menuObj)
+		{
+		   var i = menuObj.selectedIndex;
+		
+		   if(i > 0)
+		   {
+		      window.location = menuObj.options[i].value;
+		   }
+		}
+		</script>
+      </ul> 
+    </div> 
+    <!-- /sidebar -->				
+</div>		

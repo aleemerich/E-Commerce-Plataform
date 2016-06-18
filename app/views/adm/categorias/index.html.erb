@@ -1,0 +1,52 @@
+<div id="div_fundo" style="display: none; position: absolute; top: 0px; left: 0px; z-index: 90; width: 100%; "></div>
+<div id="mainM">
+	<div class="block">
+	<%= form_tag "/adm/categorias/update", :method => :post, :id => 'form_categorias'%>
+		<label> LEIA ANTES COM ANTENÇÃO</label>
+			<br />
+			Abaixo são exibidas todas as categorias cadastradas assim como suas ordens de exibição. O padrão de exibição é:
+			<br />
+			<br />
+			<b>(1) Categoria A</b> &nbsp; &nbsp; &nbsp; &nbsp;=> "(1)" é a ordem de exibição e "Categoria A" a descrição.
+			<br />
+			<br />
+			Você pode alterá-las digitando 
+			uma nova descrição no local ou mudar sua ordem, alterando o número referente a ordem. Ao final, é necessário clicar no botão
+			ATUALIZAR para que as alterações tenha efeito.
+			Caso queira excluir uma categoria, basta clicar em "[excluir]" mas ATENÇÃO, se você editar algo abaixo e clicar em qualquer "[excluir]"
+			sem antes ter clicando em ATUALIZAR, suas alterações serão perdidas.
+			Por fim, se desejar criar uma nova categoria, digite o texto no espaço reservado no final desta página mas ATENÇÃO, se você editar algo abaixo
+			e tentar inserir uma nova categoria sem antes ter clicando em ATUALIZAR, suas alterações serão perdidas. 
+		<br />
+		<p>
+			<%= imprimir_filhos(@adm_categorias, 0).html_safe %>
+		</p>
+		<br />
+		<input class="button" type="submit" value=" Atualizar " /> &nbsp; &nbsp;
+	</form>
+	<br />
+	<p>
+		Para criar uma nova categoria, preecha o formulário abaixo e clique em "Enviar".
+	</p>
+	<%= form_for(@adm_categoria, :html => {:style => "width: 300px;"}) do |f| %>
+	<p>
+		<label>Descrição</label><br />
+		<%=  f.text_field :descricao, :size => 30 %>
+	</p>
+	<p>
+		<label>Categoria Pai</label><br />
+		<select id="adm_categoria_categoria_pai_id" name="adm_categoria[categoria_pai_id]">
+			<option value="">Sem categoria pai</option>
+			<%=  select_filhos(@adm_categorias, 0).html_safe %>
+		</select>
+	</p>
+	<p>
+		<label>Ordem</label><br />
+		<%=  f.text_field :ordem, :size => 1 %>
+	</p>
+	<br />
+		<%= f.submit :value => " Enviar ", :class => "button" %>
+	<% end %>
+	</div>
+</div>
+<!-- /main -->	

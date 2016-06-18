@@ -1,0 +1,50 @@
+<div id="mainM">
+	<div class="block">
+	<form>
+	<p>
+	  <b>Nome Completo</b><br /><br />
+	  <span><%= @adm_usuario.nome_completo %></span>
+	</p>
+	
+	<p>
+	  <b>E-mail</b><br /><br />
+	  <span><%= @adm_usuario.email %></span>
+	</p>
+	
+	<p>
+	  <b>Status</b><br /><br />
+	  <span><%= @adm_usuario.status.descricao %></span>
+	</p>
+
+	<p>
+	  <b>Página onde o usuário será redirecionado quando se autenticar</b><br /><br />
+	  <span><%= @adm_usuario.url_entrada %></span>
+	</p>
+	
+	<p>
+	  <b>Observações</b><br /><br />
+	  <%= @adm_usuario.obs %>
+	</p><br />
+		<input class="button" type="button" onclick="redirecionarURL('<%= edit_adm_usuario_path(@adm_usuario) %>')" value=" Editar os dados do funcionário " /> &nbsp &nbsp
+		<% if @adm_usuario.status.codigo != '1' %> 
+		<input class="button" type="button" onclick="redirecionarURL('<%= block_adm_usuario_path(@adm_usuario) %>')" value=" Bloquear esse funcionário " /> &nbsp &nbsp
+		<% end %>
+		<input class="button" type="button" onclick="redirecionarURL('<%= adm_usuarios_path %>')" value=" Voltar a lista de funcionários " />
+	</form>
+	</div>
+<!-- /main -->	
+</div>
+<div id="sidebarM">
+				
+	<div class="sidemenu">
+		<h3>Acessos</h3>
+		<ul>
+			<% @acessos.each do |a| %>				
+			<li><span><%= a.created_at.strftime("%d/%m/%Y %H:%M") %> - IP <%= a.ip%></span> <%= a.acao%></li>
+			<% end %>
+           <br />
+      </li>
+      </ul>
+	</div>							
+<!-- /sidebar -->				
+</div>

@@ -1,0 +1,36 @@
+<div id="mainFull">
+	<div class="block">
+		<table>
+		  <tr>
+		    <th>Código</th>
+		    <th>Data do Cadastro</th>
+		    <th>Nome Completo</th>
+		    <th>Status</th>
+		    <th style="width: 15%; text-align: center">Acão</th>
+		  </tr>
+
+		<% @adm_clientes.each do |adm_cliente| %>
+		  <tr onclick="redirecionarURL('clientes/<%= adm_cliente.id %>')" class="<%= alerta_cliente(adm_cliente.status.codigo)%>">
+		    <td><%= "%07d" % adm_cliente.id %></td>
+		    <td style="width: 15%"><%= adm_cliente.created_at.strftime("%d/%m/%Y") %></td>
+		    <td><%= adm_cliente.nome_completo %></td>
+		    <td><%= adm_cliente.status.descricao %></td>
+		    <td style="text-align: center"><%= link_to 'Ver', adm_cliente %> |
+		    <%= link_to 'Editar', edit_adm_cliente_path(adm_cliente) %> |
+		    <%= link_to 'Apagar', delete_adm_cliente_path(adm_cliente)%></td>
+		  </tr>
+		<% end %>
+		</table>
+		<p>
+			<% if @offset > 0%>
+			  <%= link_to 'Anterior', '/adm/clientes/pag/' + (@offset - 20).to_s %> | 
+			  <%= link_to 'Próxima', '/adm/clientes/pag/' + (@offset + 20).to_s %>
+			<% else %>
+			  <%= link_to 'Próxima', '/adm/clientes/pag/20'%>
+			<% end %>
+		</p>
+		<br />
+	</div>
+<!-- /main -->	
+</div>
+

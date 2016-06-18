@@ -1,0 +1,20 @@
+			<table>
+			  <tr>
+			    <th>Código</th>
+			    <th>Criado em</th>
+			    <th>Modificado em</th>
+			    <th>Cliente</th>
+			    <th>Valor</th>
+			    <th>Status</th>
+			  </tr>
+			<% @adm_pedidos.each do |adm_pedido| %>
+			  <tr onclick="redirecionarURL('painel/<%= adm_pedido.id %>')" class="<%= alerta_painel(adm_pedido.status.codigo)%>">
+			    <td><%= "%07d" % adm_pedido.id %></td>
+			    <td><%= adm_pedido.created_at.strftime("%d/%m/%Y %H:%M") %></td>
+			    <td><%= adm_pedido.updated_at.strftime("%d/%m/%Y %H:%M") %></td>
+			    <td><%= adm_pedido.cliente_id.nil? ? 'Sem cliente atribuido' : adm_pedido.cliente.nome_completo %></td>
+			    <td><%= number_to_currency(adm_pedido.total, :separator => ",", :delimiter => ".", :unit => "R$ ") %></td>
+			    <td><%= adm_pedido.status.descricao %></td>
+			  </tr>
+			<% end %>
+			</table>

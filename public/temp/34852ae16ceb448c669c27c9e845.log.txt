@@ -1,0 +1,14 @@
+Filter Check & Removal Tool v4.6
+--------------------------------
+04/07/2011, 19:34:05
+
+Lowerfilter Scan results: 
+Filter: PxHelp20
+
+Filter service properties are listed below:
+
+The following filters are being removed: 
+PxHelp20: Yes
+
+Upperfilter Scan results: 
+No UpperFilters found.

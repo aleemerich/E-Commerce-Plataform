@@ -1,0 +1,113 @@
+<div id="main50">
+	<div class="block" style="background-color:#FFF; color: #000">
+		<br />
+            <h2 style="color: #000;">Pedido de compra <%= "%05d" % @adm_pedido.id.to_s%></h2>
+            <p>&nbsp;</p>
+			<p>
+				<code id="cupon">
+					<%= montaExtrato(@adm_pedido) %>
+                </code>
+            </p>
+            <p>&nbsp;</p>
+	</div>
+
+<!-- /main -->	
+</div>
+<div id="sidebar50">
+		   	<% if @andamento == 'orcamento' %>
+	<div class="sidemenu">				
+		<h3 style="color:#FF0000">Solicitação</h3>
+	    	<%= form_tag desconto_adm_painel_path(@adm_pedido) %>
+	    	O cliente solicitou análise de desconto.<br /><br />
+	    	Desconto (R$)<br /> <%= text_field_tag 'valor_desconto', @adm_pedido.valor_desconto.to_s, :size => 30%><br /><br />
+	    	Breve justificativa <br /> <%= text_field_tag 'justificativa_desconto', '', :maxlength => 200, :size => 50%><br /><br />
+	    	<input class="button" type="submit" value=" Enviar " /><br />
+	    	</form>
+	</div>
+		   	<% elsif @andamento == 'despacho' %>
+	<div class="sidemenu">				
+		<h3 style="color:#FF0000">Solicitação</h3>
+	    	<%= form_tag despacho_adm_painel_path(@adm_pedido) %>
+	    	Informe o código de rastreio.<br /><br />
+	    	Código<br /> <%= text_field_tag 'cod_rastreio', '', :size => 30%> <input class="button" type="submit" value=" Enviar " /><br /><br />
+	    	</form>
+	</div>
+		   	<% elsif @andamento == 'duvida' %>
+	<div class="sidemenu">				
+		<h3 style="color:#FF0000">Dúvida</h3>
+	    	<%= form_tag duvida_adm_painel_path(@adm_pedido) %>
+	    	Descreva sua dúvida para que seja enviada ao cliente.<br /><br />
+	    	<%= text_field_tag 'duvida', '', :size => 30%> <input class="button" type="submit" value=" Enviar " /><br /><br />
+	    	</form>
+	</div>
+			<% end %>
+
+	<div class="sidemenu">				
+		<h3>Status atual</h3>
+		<ul>
+			<li><span style="font-size:x-large"><%= @adm_pedido.status.descricao %></span></li>
+		</ul>
+	<% if !@adm_pedido_status.nil? %>
+	<br /><div class="sidemenu">	
+		<h3>Mudar status</h3>
+		<p>
+			<% @adm_pedido_status.each do |status| %>
+				<input class="button" type="button" onclick="redirecionarURL('<%= andamentos_adm_painel_path(@adm_pedido, status) %>')" value=" <%= status.descricao %> " />  &nbsp;
+	        <% end %>
+		</p>
+	</div><br />
+	<% end %>
+					
+	<div class="sidemenu">
+		<h3>Parcelas e Pagamentos</h3>
+		<ul>
+	<% if @adm_pedido.parcela_pedido.length == 0 %>
+            <li><span>Não há parcelas ou pagamentos</span></li>
+    <% else %>
+			<% @adm_pedido.parcela_pedido.each do |parcela|%>				
+			<li>
+				<%= number_to_currency(parcela.valor, :separator => ",", :delimiter => ".", :unit => "R$ ") %> - 
+				<%= parcela.dt_vencimento.strftime("%d/%m/%Y") %>
+				(<%= parcela.status.descricao.upcase %>)	
+			    <span>
+			    <% if parcela.pagamento_pedido.nil? %>
+			    Essa parcela não tem pagamentos <br />
+			    <!-- Apenas para clientes
+			    <a href="/adm/pagamento_pedidos/new/<%= parcela.id.to_s %>">[fazer pagamento]</a>
+			    -->
+			    <% else %>
+			    Pagamento: <%= parcela.pagamento_pedido.created_at.strftime("%d/%m/%Y %H:%M") %>
+			    (<%= parcela.pagamento_pedido.status.descricao.upcase %>)<br />
+			    <!-- Apenas para clientes
+			    	<% if parcela.pagamento_pedido.status_id == Status.where(["codigo = '2' and area_id = ?", Area.select('id').where(["codigo = 4"]).first]).first.id %>
+			    	<a href="/adm/pagamento_pedidos/<%= parcela.pagamento_pedido.id.to_s %>/edit">[refazer pagamento]</a>
+			    	<% end %>
+			    -->
+			    <% end %>
+			    </span>
+			</li>
+			<% end %>
+            <br />
+    <% end%>
+       </ul>
+    </div>	
+	<div class="sidemenu">
+		<h3>Endereço de entrega</h3>
+		<ul>
+	<% if @adm_pedido.endereco.nil? %>
+            <li><span>Não há entrega a ser feita</span></li>
+    <% else %>
+            <li><%= @adm_pedido.forma_envio.descricao %><span>Forma de Envio</span></li>
+			<li><%= @adm_pedido.endereco.logradouro %>, <%= @adm_pedido.endereco.numero %>
+			<% if !@adm_pedido.endereco.complemento.blank? %>
+            (<%= @adm_pedido.endereco.complemento %>)
+			<% end %>
+            <br />CEP <%= @adm_pedido.endereco.cep %> - 
+            <%= @adm_pedido.endereco.cidade %> / 
+            <%= @adm_pedido.endereco.estado %><span>Endereço</span></li><br />
+       	    <iframe width="350" height="250" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.com/maps?q=<%= @adm_pedido.endereco.logradouro %>, <%= @adm_pedido.endereco.numero %>, <%= @adm_pedido.endereco.cep %>, <%= @adm_pedido.endereco.cidade %>, <%= @adm_pedido.endereco.estado %>&z=17&output=embed&ie=UTF8&iwloc="></iframe></li><br />
+      	    <a target="_blank" href="http://maps.google.com/maps?q=<%= @adm_pedido.endereco.logradouro %>, <%= @adm_pedido.endereco.numero %>, <%= @adm_pedido.endereco.cep %>, <%= @adm_pedido.endereco.cidade %>, <%= @adm_pedido.endereco.estado %>&z=17">[veja no google maps]</a>
+		</ul>				
+    <% end%>
+	</div>							
+</div>

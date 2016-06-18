@@ -1,0 +1,19 @@
+<div id="mainM">
+	<div class="block">
+	<% @acao = "edit"%>
+	<%= render 'form' %>
+	</div>
+<!-- /main -->	
+</div>
+<div id="sidebarM">
+					
+		<div class="sidemenu">
+			<h3>Histórico</h3>
+			<ul>				
+			<ul>		
+			<% @historico.each do |a| %>				
+				<li><span><%= a.created_at.strftime("%d/%m/%Y %H:%M") %> - <%= a.acao%></span> <%= a.usuario.nome_completo%></li>
+			<% end %>
+          </ul>
+		</div>							
+</div>

@@ -1,0 +1,30 @@
+<!-- CONTENT -->
+	<div id="content"><div class="inner_copy"><div class="inner_copy">&nbsp;</div></div>
+		<div class="indent">
+			<div class="wrapper">
+				<div class="col-1">
+					<h3><b><%= @publico_produto.nome %></b></h3>
+					<div class="img-box1"><%= mostra_foto_publico(@publico_produto) %>
+						<p class="p0">
+							&nbsp; &nbsp; &nbsp;<span style="font-size:large">Preço Unitário</span><br /><br />
+							&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+								<span style="font-size:xx-large"><b><%= number_to_currency(@publico_produto.valor_max, :separator => ",", :delimiter => ".", :unit => "R$ ") %> 
+								<%= @publico_produto.fl_desconto ? '*' : '' %></b></span><br /><br />
+							<p><% if @publico_produto.fl_desconto %>
+							* Você pode pedir análise de desconto e ter descontos incríveis! Aproveite!
+							<% end %></p>
+							<a href="/item_pedidos/new/<%= @publico_produto.id %>" class="link1"><em><b>COMPRAR!</b></em></a>
+						</p>
+				  </div>
+				  	<p></p>
+					<p><%= @publico_produto.descricao.html_safe %></p>
+					<p class="p0">&nbsp;</p>
+				</div>
+				<div class="col-2">
+					<br />
+					<%= render :partial => "layouts/lancamentos", :locals => {:produtos => @publico_produtos_recentes} %>
+					<%= render :partial => "layouts/login" %>
+				</div>
+			</div>
+		</div>
+	</div>

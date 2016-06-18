@@ -1,0 +1,74 @@
+<%= javascript_include_tag 'item_extra' %>
+<div id="mainM">
+	<div class="block">
+		
+			<p>
+			  	<%= @adm_produto.descricao %><br />
+			</p><br />
+			<p>
+				<span style="font-size: xx-large; color: #FFFFFF">
+				<%= number_to_currency(@adm_produto.valor_max, :separator => ",", :delimiter => ".", :unit => "R$ ") %>
+				</span> (cada unidade)<br /><br />
+			</p><br />
+			<%= form_for(@adm_item_pedido, :html => {:multipart => true}) do |f| %>
+				<%= f.hidden_field :pedido_id, :value => params[:id_pedido] %>
+				<%= f.hidden_field :produto_id, :value => @adm_produto.id %>
+				<%= f.hidden_field :valor_unitario, :value => @adm_produto.valor_max %>
+				<%= f.hidden_field :status_id, :value => Status.where(["codigo = 'IP-0' and area_id = ?", Area.select('id').where(["codigo = 5"]).first]).first.id %>
+				<% if @adm_produto.fl_oculta_qtde %>
+					<%= f.hidden_field :quantidade, :value => @adm_produto.txt_oculta_qtde %>
+				<% else %>
+				<div class="field"><p>
+				    <%= f.label :quantidade, 'Quantidade' %><br />
+				    <%= f.text_field :quantidade, :size => 30 %><br />
+				    <% if @adm_produto.fl_ajuda_qtde %>
+				    	DICA: <%= @adm_produto.txt_ajuda %><br />
+				    <% end %>
+				    </p>
+				</div>
+				<% end %>
+				<% if @adm_produto.fl_desconto %>
+				<div class="field"><p>
+				    <label>Análise de Desconto</label><br /><br />
+				    Esse produto pode receber descontos dependendo de como for comprado (quantidade, itens extras e outros). Por isso, se desejar, 
+				    podemos analisar um possível desconto para você. Se deseja que fassamos essa análise marque a opção abaixo, lembramos que 
+				    <b>essa análise NÃO GARANTE que um desconto seja dado</b> e que <b>seu pedido NÃO PODORÁ ser finalizado (concluído)</b> até que a análise seja feita. O prazo de análise é de 24 horas. <br /><br />
+				    <%= check_box_tag 'fl_desconto' %> Quero solicitar análise de desconto.<br /><br /></p>
+				</div>
+				<% end %>
+				<div class="field"><p>
+				    <%= f.label :obs, 'Observações' %><br />
+				    <%= f.text_area :obs, :rows =>10, :cols => 60 %></p>
+				</div>
+				<% @adm_produto.produto_extra.each do |produto_extra|%>
+						<% if produto_extra.status_id == Status.where(["codigo = '0' and area_id = ?", Area.select('id').where(["codigo = 3"]).first]).first.id%>
+						<div class="field"><p id="itens_extras_<%= produto_extra.id %>">
+						    <%= produto_extra.nome %><br />
+						    <input id="adm_item_pedido_extra_item_<%= produto_extra.id %>_produto_extra_id" name="adm_item_pedido_extra[item<%= produto_extra.id %>[produto_extra_id]]" type="hidden" value="<%= produto_extra.id %>" />
+						    <%= montaInputs(produto_extra.produto_extra_tipo.tag, produto_extra.id.to_s, produto_extra.valor_cobrado) %>
+						    <br />
+						    <% if !produto_extra.txt_ajuda.blank? %>
+						    	<span style="font-size: x-small">* <%= produto_extra.txt_ajuda.html_safe %></span><br />
+						    <% end %>
+						    	<span style="font-size: x-small">** Forma de cobrança: <%= produto_extra.produto_extra_fator_calculo.descricao %></span><br /></p>
+						</div>
+						<% end %>
+				<% end %>				
+				<div class="actions"><p>
+				    <%= f.submit :value => " Adicionar produto ao pedido ", :class => "button" %> &nbsp; &nbsp;
+				    <input class="button" type="button" onclick="redirecionarURL('<%= adm_item_pedidos_path(params[:id_pedido]) %>')" value=" Voltar a lista de produtos " /> &nbsp; &nbsp; 
+					<input class="button" type="button" onclick="redirecionarURL('<%= adm_pedido_path(params[:id_pedido]) %>')" value=" Voltar ao pedido " />
+					</p>
+				</div>
+			<% end %>
+		
+	</div>
+<!-- /main -->	
+</div>
+<div id="sidebarM">
+	<div class="sidemenu">
+		<h3>Imagens</h3>
+		<br />
+		<%= mostraFotos(@adm_produto, 4) %>
+	</div>							
+</div>

@@ -1,0 +1,218 @@
+<div id="div_fundo" style="display: none; position: absolute; top: 0px; left: 0px; z-index: 90; width: 100%; "></div>
+<div id="mainM">
+	<div class="block">
+	<form>
+		<p>
+		  <b>Nome</b><br />
+		  <span><%= @adm_produto.nome %></span>
+		</p>
+		
+		<p>
+		  <b>Valor Máximo</b><br />
+		  <span><%= number_to_currency(@adm_produto.valor_max, :separator => ",", :delimiter => ".", :unit => "R$ ") %></span>
+		</p>
+		
+		<p>
+		  <b>Valor Mínimo</b><br />
+		  <span><%= number_to_currency(@adm_produto.valor_min, :separator => ",", :delimiter => ".", :unit => "R$ ") %></span>
+		</p>
+		
+		<p>
+		  <b>Dimensões</b><br />
+		  peso: <span><%= @adm_produto.peso %></span> gramas<br />
+		  larg x alt x compr: <span><%= @adm_produto.largura %></span> x 
+		  <span><%= @adm_produto.altura %></span> x <span><%= @adm_produto.comprimento %></span> cm
+		</p>
+		
+		<p>
+		  <b>Quantidadade</b><br />
+		  <% if @adm_produto.fl_oculta_qtde %>
+		  Este produto <span>OCULTA</span> o campo quantidade, atribuindo a esse campo o valor de: <span><%= @adm_produto.txt_oculta_qtde %></span>
+		  <% else %> 
+		  Este produto <span>MOSTRA</span> o campo quantidade.
+		  <% end %>
+		</p>
+
+		<p>
+		  <b>Ajuda</b><br />
+		  <% if @adm_produto.fl_ajuda_qtde %>
+		  Este produto <span>EXIBE</span> o seguinte texto de ajuda para o campo QUANTIDADE: <span><%= @adm_produto.txt_ajuda %></span>
+		  <% else %> 
+		  Este produto <span>NÃO EXIBE</span> texto de ajuda.
+		  <% end %>
+		</p>
+
+		<p>
+		  <b>Análise de desconto</b><br />
+		  <% if @adm_produto.fl_desconto %>
+		  Este produto <span>PERMITE</span> análise de desconto</span>
+		  <% else %> 
+		  Este produto <span>NÃO PERMITE</span> análise de desconto.
+		  <% end %>
+		</p>
+
+		<p>
+		  <b>Status:</b><br />
+		  <span><%= @adm_produto.status.descricao %></span>
+		</p>
+
+		<p>
+		  <b>Comissao</b><br />
+		  <span><%= number_to_percentage((@adm_produto.perc_comissao * 100), :delimiter => '.', :precision => 2) %></span>
+		</p>
+		<br />
+		<input class="button" type="button" onclick="redirecionarURL('<%= edit_adm_produto_path(@adm_produto) %>')" value=" Editar os dados do produto " /> &nbsp &nbsp
+		<% if @adm_produto.status.codigo != '1' %> 
+		<input class="button" type="button" onclick="redirecionarURL('<%= block_adm_produto_path(@adm_produto) %>')" value=" Bloquear esse produto " /> &nbsp &nbsp
+		<% end %>
+		<input class="button" type="button" onclick="redirecionarURL('<%= adm_produtos_path %>')" value=" Voltar a lista de produto " />
+	</form>
+	<br />
+	<p>
+		<label>Imagens do produto</label> 
+	    <table width="100%" border="0" style="margin-left:20px; width: 95%">
+	       <tr>
+	        <th scope="col">Código</th>
+	        <th scope="col">Descricao</th>
+	        <th scope="col">Status</th>
+	        <th scope="col">Ação</th>
+	      </tr>
+        <% @arquivos.each do |arquivo| %>
+	      <tr>
+            <td><%= arquivo.id %></td>
+            <td><%= arquivo.descricao %></td>
+            <td><%= arquivo.status.descricao %></td>
+            <td style="text-align: center">
+            	<% if arquivo.status.codigo == '2' and session[:usuario].status.area.codigo == '0' %>
+            		<%= link_to 'Ativar', active_arquivos_path(arquivo) %></td>
+            	<% else %>
+            		<%= link_to 'Apagar', delete_arquivos_path(arquivo)%></td>
+            	<% end %>
+          </tr>
+	    <% end %>
+	    </table>
+	 </p>
+	 <p><input class="button" type="button" onclick="abrirFormArquivo()" value=" Cadastrar uma nova imagem " /></p>
+  	 	<%=  javascript_include_tag 'lightbox_fixo' %>
+	    <%= form_for(Arquivo.new, :html => { :multipart => true, :id => 'form_produto_arquivo', :style => "visibility: hidden;position: absolute; z-index: 100; border-color: #CCC;"  }) do |f| %>    
+	           <%= f.hidden_field :produto_id, :value => @adm_produto.id %>
+	           <label>Arquivo: </label>
+	           <%= f.file_field :caminho, :accept => "image/*" %><br />
+	           <label>Descrição: </label>
+	           <%= f.text_field :descricao %>
+	           <br /><br />
+	           <%= f.submit :value => " Salvar este arquivo ", :class => "button" %> &nbsp; &nbsp; 
+	           <input class="button" type="button" onclick="fecharFormArquivo()" value=" Cancelar " id="btn_imagem_fechar" />
+	    <% end %>
+	    <script>
+    		function abrirFormArquivo(){
+	    		var formulario = document.getElementById('form_produto_arquivo')
+	    		var paginasMedidas = pegaMedidas();
+	    		var xtop = (paginasMedidas[3] / 2);
+	    		xtop = xtop - (formulario.scrollHeight / 2);
+	    		var xleft = (paginasMedidas[2] / 2);
+	    		xleft = xleft - (formulario.scrollWidth / 2);
+	    		formulario.style.top = (xtop - 100) + 'px';
+	    		formulario.style.left = (xleft - 50) + 'px';
+	    		ativaFundo(); 
+	    		formulario.style.visibility = "visible";
+	    		window.scrollTo(-10,-10);
+	    	}
+	    	
+	    	function fecharFormArquivo(){
+	    		desativaFundo();
+	    		var formulario = document.getElementById('form_produto_arquivo')
+	    		formulario.style.visibility = "hidden";
+	    	}
+	     </script>  
+	<br />
+	<p>
+		<label>Itens Extras do Produto</label> 
+	    <table width="100%" border="0" style="margin-left:20px; width: 95%">
+	       <tr>
+	        <th scope="col">Nome</th>
+	        <th scope="col">Tipo</th>
+	        <th scope="col">Valor</th>
+	        <th scope="col">Fator de Cálculo</th>
+	        <th scope="col">Texto de ajuda</th>
+	        <th scope="col">Status</th>
+	        <th scope="col">Ação</th>
+	      </tr>
+        <% @adm_produto_extras.each do |adm_produto_extra| %>
+	      <tr>
+             <td><%= adm_produto_extra.nome %></td>
+            <td><%= adm_produto_extra.produto_extra_tipo.nome %></td>
+            <td><%= adm_produto_extra.valor_cobrado %></td>
+            <td><%= adm_produto_extra.produto_extra_fator_calculo.nome %></td>
+            <td><%= adm_produto_extra.txt_ajuda %></td>
+            <td><%= adm_produto_extra.status.descricao %></td>
+            <td style="text-align: center">
+            	<%= link_to 'Editar', adm_produto_produto_extras_path(@adm_produto, adm_produto_extra) %> | 
+            	<% if adm_produto_extra.status.codigo == '2' and session[:usuario].status.area.codigo == '0' and  session[:usuario].status.codigo == '0' %>
+            		<%= link_to 'Ativar', active_adm_produto_extra_path(adm_produto_extra) %></td>
+            	<% else %>
+            		<%= link_to 'Apagar', delete_adm_produto_extra_path(adm_produto_extra)%></td>
+            	<% end %>
+          </tr>
+	    <% end %>
+	    </table>
+	 </p>
+	 <p><input class="button" type="button" onclick="abrirFormProdutoExtra()" value=" Cadastrar um novo Item Extra de produto " /></p>
+  	 	<%=  javascript_include_tag 'lightbox_fixo' %>
+	    <%= form_for(@adm_produto_extra, :html => { :id => 'form_produto_produto_extra', :style => "visibility: hidden;position: absolute; z-index: 100; border-color: #CCC;"  }) do |f| %>    
+	           <%= f.hidden_field :produto_id, :value => @adm_produto.id %>
+	           <label>Nome: </label>
+	           <%= f.text_field :nome, :size => 50 %><br />
+	           <label>Tipo de Informação: </label>
+			   <%= 	f.collection_select(:produto_extra_tipo_id, Adm::ProdutoExtraTipo.all, :id, :nome) %><br />
+			   <label>Fator de Cálculo: </label>
+	           <%= 	f.collection_select(:produto_extra_fator_calculo_id, Adm::ProdutoExtraFatorCalculo.all, :id, :nome) %><br />
+			   * <label>Valor: </label>
+	           <%= f.text_field :valor_cobrado %><br />
+			   * <label>Texto de ajuda: </label>
+	           <%= f.text_field :txt_ajuda %><br />
+			   <label>Status: </label>
+			   <% if session[:usuario].status.codigo == '0' and session[:usuario].status.area.codigo == '0'%>
+			     <%= 	f.collection_select(:status_id, Status.all(:conditions => ['area_id = ?', Area.select('id').where(["codigo = 3"]).first]), :id, :descricao) %>
+			   <% else %>
+			     <%= 	f.collection_select(:status_id, Status.all(:conditions => ['codigo IN (0,1) AND area_id = ?', Area.select('id').where(["codigo = 3"]).first]), :id, :descricao) %>
+			   <% end %>	           <br />
+			   * &nbsp;Dependo do caso, esses campos NÃO são obrigatórios<br /><br />
+	           <%= f.submit :value => " Salvar este item extra ", :class => "button" %> &nbsp; &nbsp; 
+	           <input class="button" type="button" onclick="fecharFormProdutoExtra()" value=" Cancelar " id="btn_produto_extra_fechar" />
+	    <% end %>
+	    <script>
+    		function abrirFormProdutoExtra(){
+	    		var formulario = document.getElementById('form_produto_produto_extra')
+	    		var paginasMedidas = pegaMedidas();
+	    		var xtop = (paginasMedidas[3] / 2);
+	    		xtop = xtop - (formulario.scrollHeight / 2);
+	    		var xleft = (paginasMedidas[2] / 2);
+	    		xleft = xleft - (formulario.scrollWidth / 2);
+	    		formulario.style.top = (xtop - 100) + 'px';
+	    		formulario.style.left = (xleft - 50) + 'px';
+	    		ativaFundo(); 
+	    		formulario.style.visibility = "visible";
+	    		window.scrollTo(-10,-10);
+	    	}
+	    	
+	    	function fecharFormProdutoExtra(){
+	    		desativaFundo();
+	    		var formulario = document.getElementById('form_produto_produto_extra')
+	    		formulario.style.visibility = "hidden";
+	    	}
+	     </script>  
+	</div>
+<!-- /main -->	
+</div>
+<div id="sidebarM">
+					
+		<div class="sidemenu">
+			<h3>Histórico</h3>
+			<ul>		
+			<% @historico.each do |a| %>				
+				<li><span><%= a.created_at.strftime("%d/%m/%Y %H:%M") %> - <%= a.acao%></span> <%= a.usuario.nome_completo%></li>
+			<% end %>
+	        </ul>
+		</div>							
+</div>

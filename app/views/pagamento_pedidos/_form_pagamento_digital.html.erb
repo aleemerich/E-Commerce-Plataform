@@ -1,0 +1,14 @@
+				<form name="<%= pagamento.pagamento_pedido_empresa.parcial %>" action="<%= pagamento.pagamento_pedido_empresa.url_post %>" class="pagseguro" method="post">
+						<input name="email_loja" type="hidden" value="contato@belaemporio.com.br "> 
+						<input name="produto_codigo_1" type="hidden" value="<%= pagamento.id %>"> 
+						<input name="produto_descricao_1" type="hidden" value="<%= 'Pagamento da parcela ' + pagamento.parcela_pedido.nro_parcela.to_s + ' do pedido ' + "%05d" % pagamento.parcela_pedido.pedido_id.to_s %>">
+						<input name="produto_qtde_1" type="hidden" value="1.0"> 
+						<input name="produto_valor_1" type="hidden" value="<%= pagamento.valor %>" >
+						<input name="tipo_integracao" type="hidden" value="PAD">
+						<input name="frete" type="hidden" value="0.00">
+						<input name="redirect" type="hidden" value="true">
+						<input name="redirect_time" type="hidden" value="10">
+						<input name="url_retorno" type="hidden" value="http://www.viaplotter.com.br<%= pagamento.pagamento_pedido_empresa.url_retorno %>">
+						<input name="id_pedido" type="hidden" value="<%= pagamento.id %>">
+						<input type="submit" value="Efetuar Pagamento!">
+				</form>

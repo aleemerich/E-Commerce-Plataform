@@ -1,0 +1,24 @@
+<div id="mainFull">
+	<div class="block">
+		<% @adm_produtos.each do |adm_produto| %>
+		<form class="formH" onclick="redirecionarURL('/adm/pedidos/<%= params[:id_pedido] %>/item_pedidos/<%= adm_produto.id %>/new')">
+			<span><%= adm_produto.nome %></span><br /><br />
+			<%= mostraFoto(adm_produto) %>
+			<span style="font-size: x-large; color: #FFFFFF">
+				<%= number_to_currency(adm_produto.valor_max, :separator => ",", :delimiter => ".", :unit => "R$ ") %>
+			</span> (cada unidade) <br /><br />
+			<%= adm_produto.descricao.length > 300 ? adm_produto.descricao[0,300] + '...' : adm_produto.descricao %>
+		</form>
+		<% end %>
+		<p>
+			<% if @offset > 0 %>
+			  <%= link_to 'Anterior', '/adm/pedidos/' + params[:id_pedido] + '/pedido_itens/pag/' + (@offset - 20).to_s %> | 
+			  <%= link_to 'Próxima', '/adm/pedidos/' + params[:id_pedido] + '/pedido_itens/pag/' + (@offset + 20).to_s %>
+			<% else %>
+			  <%= link_to 'Próxima', '/adm/pedidos/' + params[:id_pedido] + '/pedido_itens/pag/20'%>
+			<% end %>
+		</p>
+		<br />
+	</div>
+<!-- /main -->	
+</div>

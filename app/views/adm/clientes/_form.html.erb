@@ -1,0 +1,69 @@
+<%= form_for(@adm_cliente) do |f| %>
+  <div class="field"><p>
+    <%= f.label :nome_completo, 'Nome completo'%><br />
+    <%= f.text_field :nome_completo, :size => 100 %></p>
+  </div>
+  <div class="field"><p>
+    <%= f.label :cpf_cnpj, 'CPF/CNPJ'%><br />
+    <%= f.text_field :cpf_cnpj, :size => 50 %></p>
+  </div>
+  <div class="field"><p>
+    <%= f.label :dt_nasc_abertura, 'Data de nascimento/abertura da empresa'%><br />
+    <%= f.date_select :dt_nasc_abertura, :order => [:day, :month, :year], :use_month_names => ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'], :start_year => 1900, :end_year => Time.now.year %></p>
+  </div>
+  <div class="field"><p>
+    <%= f.label :email, 'E-mail'%><br />
+    <%= f.text_field :email, :size => 100 %></p>
+  </div>
+  <div class="field"><p>
+    <%= f.label :senha, 'Senha' %><br />
+    <%= f.password_field :senha %></p>
+  </div>
+  <div class="field"><p>
+    <%= f.label :status_id, 'Status'%><br />
+    <% if session[:usuario].status.codigo == '0' and session[:usuario].status.area.codigo == '0'%>
+    <%= 	f.collection_select(:status_id, Status.all(:conditions => ['area_id = ?', Area.select('id').where(["codigo = 2"]).first]), :id, :descricao) %>
+    <% else %>
+    <%= 	f.collection_select(:status_id, Status.all(:conditions => ['codigo IN (0,1) AND area_id = ?', Area.select('id').where(["codigo = 2"]).first]), :id, :descricao) %>
+    <% end %></p>
+  </div>
+  <% if @acao == "new" %>
+  <script type="text/javascript" src="http://cidades-estados-js.googlecode.com/files/cidades-estados-1.2-utf8.js"></script>
+  <div class="field"><p>
+    <%= label_tag 'Endereço' %><br />
+    Logradouro: <%= text_field_tag 'adm_endereco[logradouro]', nil, :size => 100 %><br />
+    Número: <%= text_field_tag 'adm_endereco[numero]', nil, :size => 5 %> &nbsp; &nbsp; 
+    Complemento: <%= text_field_tag 'adm_endereco[complemento]', nil,:size => 40 %> &nbsp; &nbsp; 
+    CEP: <%= text_field_tag 'adm_endereco[cep]', nil, :size => 15 %><br />
+    Estado: <%= text_field_tag 'adm_endereco[estado]', nil%> &nbsp; &nbsp;
+    Cidade: <%= text_field_tag 'adm_endereco[cidade]', nil%><br />
+	<script language="JavaScript" type="text/javascript" charset="utf-8">
+        new dgCidadesEstados({
+          cidade: document.getElementById('adm_endereco_cidade'),
+          estado: document.getElementById('adm_endereco_estado'),
+		  change: true
+        })
+  	</script>
+    </p>
+  </div>
+   <div class="field"><p>
+    <%= label_tag 'Telefone' %><br />
+    DDD: <%= text_field_tag 'adm_telefone[ddd]', nil, :size => 3 %> &nbsp; &nbsp;
+    Número: <%= text_field_tag 'adm_telefone[telefone]', nil, :size => 15 %><br />
+    </p>
+  </div>
+  <div class="field"><p>
+    <%= label_tag 'Forma de pagamento' %><br />
+    <%= select_tag "forma_pagamento_id", options_from_collection_for_select(Adm::FormaPagamento.all.collect, :id, :descricao) %><br /> &nbsp; &nbsp;
+    </p>
+  </div>
+  <% end %>
+  <div class="field"><p>
+    <%= f.label :obs, 'Observacoes'%><br />
+    <%= f.text_area :obs, :rows =>10, :cols => 60 %></p>
+  </div>
+  <div class="actions">
+    <%= f.submit :value => " Salvar os dados do cliente ", :class => "button" %> &nbsp; &nbsp; 
+	<input class="button" type="button" onclick="redirecionarURL('<%= adm_clientes_path %>')" value=" Voltar a lista de clientes " />
+  </div>
+<% end %>

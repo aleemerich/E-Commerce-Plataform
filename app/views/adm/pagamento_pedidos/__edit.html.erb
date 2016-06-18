@@ -1,0 +1,48 @@
+<div id="main50">
+	<div class="block">
+		<p>
+			<h4>Total do Pagamento: 
+			<b><span style="color:#FF0000"><%= number_to_currency(@adm_pagamento_pedido.parcela_pedido.valor, :separator => ",", :delimiter => ".", :unit => "R$ ") %></span></b></h4>
+		</p>
+
+		<%= form_for(@adm_pagamento_pedido) do |f| %>
+		  <% if @adm_pagamento_pedido.errors.any? %>
+		    <div id="error_explanation">
+		      <h2><%= pluralize(@adm_pagamento_pedido.errors.count, "error") %> prohibited this adm_cliente from being saved:</h2>
+		
+		      <ul>
+		      <% @adm_pagamento_pedido.errors.full_messages.each do |msg| %>
+		        <li><%= msg %></li>
+		      <% end %>
+		      </ul>
+		    </div>
+		  <% end %>
+		  <%= f.hidden_field :parcela_pedido_id, :value => @adm_pagamento_pedido.parcela_pedido.id %>
+		  <%= f.hidden_field :valor, :value => @adm_pagamento_pedido.parcela_pedido.valor %>
+			<span>Escolha a forma de pagamento</span><br /><br />
+			<table border="0" style="margin-left:0px; width: 100%">
+			  <% Adm::PagamentoPedidoEmpresa.all.each do |empresa| %>
+   		      <tr>
+		      	<td style="text-align:center"><%= radio_button 'adm_pagamento_pedido', 'pagamento_pedido_empresa_id', empresa.id %></td>
+		      	<td><%= empresa.nome.upcase%></td>
+		      </tr>
+			  <% end %>
+		    </table><br />
+		    <div class="actions"><br />
+		      <input class="button" type="submit" value=" Prosseguir " /> &nbsp &nbsp 
+			  <input class="button" type="button" onclick="redirecionarURL('<%= adm_pedido_path(@adm_pagamento_pedido.parcela_pedido.pedido) %>')" value=" Voltar ao pedido " /> &nbsp; &nbsp;
+		    </div>
+		<% end %>
+	</div>
+<!-- /main -->	
+</div>
+<div id="sidebar50">
+					
+		<div class="sidemenu">
+			<h3>Detalhes do Produtos</h3>
+			<p style="color: #000">
+				<code id="cupon">
+					<%= montaExtrato(@adm_pagamento_pedido.parcela_pedido.pedido) %>
+                </code></p>
+   		</div>							
+</div>

@@ -1,0 +1,66 @@
+<%= form_for(@adm_usuario) do |f| %>
+  <div class="field"><p>
+    <%= f.label :nome_completo, 'Nome Completo'%><br />
+    <%= f.text_field :nome_completo, :size => 100 %></p>
+  </div>
+  <div class="field"><p>
+    <%= f.label :email, 'E-mail'%><br />
+    <%= f.text_field :email, :size => 100 %></p>
+  </div>
+  <div class="field"><p>
+    <%= f.label :senha, 'Senha'%><br />
+    <%= f.password_field :senha %></p>
+  </div>
+  <div class="field"><p>
+  	<%= f.label :permissao, 'Permissões'%><br />
+   <table style="padding: 0 0 0 0; margin: 0px 0px 0px 0px; text-align: center; width: 99%">
+   	<% @areas.each_with_index{|a, index| 
+   		 if index%2 == 0
+   	   	%><tr><td style="padding: 0 0 0 0; margin: 0px 0px 0px 0px; text-align: center; width: 50%">
+   	   		<table style="padding: 0 0 0 0; margin: 0px 0px 0px 0px; text-align: center; width: 99%">
+   	   			<tr><th><%= a.descricao%></th></tr>
+   	   			<% @permissao_item.select {|p| 
+   	   				    if p.area_id == a.id
+   	   					%>
+     	   					<tr><td><%= check_box_tag 'permissao_item['+p.id.to_s+']', p.cod_acesso, @acao == 'edit'?permissao_acesso_helper(@adm_usuario.permissao, p.cod_acesso):false %> &nbsp;<%= p.descricao%></td></tr>
+   	   				<%  end
+   	   					}%>
+   	   		</table>
+   	   	 </td>
+   	<%   else
+   		%><td style="padding: 0 0 0 0; margin: 0px 0px 0px 0px; text-align: center; width: 50%">
+   			<table style="padding: 0 0 0 0; margin: 0px 0px 0px 0px; text-align: center; width: 99%">
+   	   			<tr><th><%= a.descricao%></th></tr>
+   	   			<% @permissao_item.select {|p| 
+   	   				    if p.area_id == a.id
+   	   					%>
+      	   					<tr><td><%= check_box_tag 'permissao_item['+p.id.to_s+']', p.cod_acesso, @acao == 'edit'?permissao_acesso_helper(@adm_usuario.permissao, p.cod_acesso):false %> &nbsp;<%= p.descricao%></td></tr>
+  	   				<%  end
+   	   					}%>
+   	   		</table>
+   		</td></tr>
+   	<%  end
+   		}  %>
+   </table></p>
+  </div>
+  <div class="field"><p>
+    <%= f.label :status_id, 'Status'%><br />
+    <% if session[:usuario].status.codigo == '0' and session[:usuario].status.area.codigo == '0'%>
+    <%= 	f.collection_select(:status_id, Status.all(:conditions => ['area_id = ? OR area_id = ?', Area.select('id').where(["codigo = 1"]).first, Area.select('id').where(["codigo = 0"]).first]), :id, :descricao) %></p>
+    <% else %>
+    <%= 	f.collection_select(:status_id, Status.all(:conditions => ['codigo IN (0,1) AND area_id = ?', Area.select('id').where(["codigo = 1"]).first]), :id, :descricao) %></p>
+    <% end %>
+  </div>
+  <div class="field"><p>
+    <%= f.label :obs, 'Observações'%><br />
+    <%= f.text_area :obs, :rows =>10, :cols => 60 %></p>
+  </div>
+  <div class="field"><p>
+    <%= f.label :url_entrada, 'Página onde o usuário será redirecionado quando se autenticar'%><br />
+    <%= f.text_field :url_entrada, :size => 100 %></p>
+  </div>
+  <div class="actions"><br />
+    <%= f.submit :value => " Salvar os dados do funcionário ", :class => "button" %> &nbsp &nbsp 
+	<input class="button" type="button" onclick="redirecionarURL('<%= adm_usuarios_path %>')" value=" Voltar a lista de funcionários " />
+  </div>
+<% end %>

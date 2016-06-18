@@ -1,0 +1,21 @@
+<div id="mainM">
+	<div class="block">
+	<% @acao = "edit"%>
+	<%= render 'form' %>
+	</div>
+<!-- /main -->	
+</div>
+<div id="sidebarM">
+				
+	<div class="sidemenu">
+		<h3>Acessos</h3>
+		<ul>
+			<% @acessos.each do |a| %>				
+			<li><span><%= a.created_at.strftime("%d/%m/%Y %H:%M") %> - IP <%= a.ip%></span> <%= a.acao%></li>
+			<% end %>
+           <br />
+      </li>
+      </ul>
+	</div>							
+<!-- /sidebar -->				
+</div>

@@ -1,0 +1,20 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//PT-BR"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+	  <meta http-equiv="Content-Type" content="text/html">
+	  <title>Dúvida sobre pedido</title>
+	  <link href="http://www.rmgraficarapida.com.br/stylesheets/style.css" media="screen" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+<h1><b>Prezado <%= @pedido.cliente.nome_completo %>,</b></h1>
+<p>Entramos em contato sobre o pedido <%= "%05d" % @pedido.id %> pois há dúvidas no seu pedido. Veja abaixo a dúvida em questão:</p>
+<br /><p><i>"<%= @duvida %>"</i></p>
+<br />
+<p>Para responder essa dúvida, basta responder esse e-mail normalmente. Aguardamos seu contato.</p>
+<br /><p>Grato.</p>
+<br />
+<h2>RM Gráfica Rápida</h2>
+<br /> <br />
+  </body>
+</html>

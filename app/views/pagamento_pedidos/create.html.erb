@@ -1,0 +1,60 @@
+
+<!-- CONTENT -->
+	<div id="content"><div class="inner_copy"><div class="inner_copy">&nbsp;</div></div>
+		<div class="indent">
+			<div class="wrapper">
+				<div class="col-1">
+					<h3><b>Confirme a </b>forma de pagamento</h3>
+					<span>Valor do Pagamento: </span>
+					<span style="color:#FF0000; font-size: large"><%= number_to_currency(@pagamento_pedido.valor, :separator => ",", :delimiter => ".", :unit => "R$ ") %></span></b><br /><br />
+					<span>Forma de Pagamento escolhida:</span>
+					<span style="color:#FF0000; font-size: large"><%= @pagamento_pedido.pagamento_pedido_empresa.nome %></span></b><br /><br />
+				<% case @pagamento_pedido.pagamento_pedido_empresa.parcial %>
+				<% when 'pagseguro'%>
+					<%= render :partial => "form_pag_seguro", :locals => {:order => @order} %>
+				<% when 'pagamentodigital'%>
+					<%= render :partial => "form_pagamento_digital", :locals => {:pagamento => @pagamento_pedido} %>
+				<% end %>
+					<br />
+					<br />
+					<div style="border: 4px solid #FF0000; border-style: dashed; padding: 5px 5px 5px 5px;text-align:center;">
+						<p style="font-size:medium;color:#FF0000;">
+							<b>ATENÇÃO!</b>							
+						</p>
+						<p>
+							<b>AO CLICAR EM "EFETUAR PAGAMENTO" VOCÊ SERÁ <br /> REDIRECIONADO AO SITE DE PAGAMENTO "<%= @pagamento_pedido.pagamento_pedido_empresa.nome.upcase %>"! </b>
+						</p>
+						<p> 
+							Esse procedimento é feito para sua segurança. <br />
+							Ao final do processo, você será redirecionado novamente <br /> ao nosso site para finalizar seu pedido.
+							<br /><br />
+							Caso tenha dúvida, <a target="_blank" href="<%= @pagamento_pedido.pagamento_pedido_empresa.url_site %>"><span>visite o site do <%= @pagamento_pedido.pagamento_pedido_empresa.nome.upcase %> antes clicando aqui.</span></a>
+						</p>
+					</div>
+					<br />
+					<br />
+					<!--
+					<a href="#" onclick="javascript:history.go(-2)" class="link1"><em><b>VOLTAR!</b></em></a>
+					-->
+			    </div>
+				<div class="col-2">
+					<div class="box2">
+						<div class="border-top">
+							<div class="left-top-corner">
+								<div class="right-top-corner">
+									<div class="inner">
+										<h4 style="text-align: center"><b>ATENÇÃO!</b></h4>
+										<ul class="news">
+											<li><p>Você será <b><span style="color:#E7871C">redirecionado</span> para o site de pagamento.</b></p></li>
+											<li><p>Essa operação é <b>100% segura</b> e visa mais confiabilidade para nós e você!</b></p></li>
+											<li><p>Se tem dúvidas em relação aos seus parcelamentos, <b>entre em contato conosco </b>e tire suas dúvidas antes do fechamento!</p></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>

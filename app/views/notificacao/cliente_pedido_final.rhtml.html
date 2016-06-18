@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//PT-BR"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+	  <meta http-equiv="Content-Type" content="text/html">
+	  <title>Confirmacao de Pedido</title>
+	  <link href="http://rmgraficarapida.com.br/stylesheets/style.css" media="screen" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+<p><b>Prezado <%= @pedido.cliente.nome_completo %>,</b></p>
+<p>&nbsp;</p>
+<p>Abaixo você encontra um DEMONSTRATIVO COMPLETO de sua compra.</p>
+<p>&nbsp;</p>
+<h2>Demonstrativo do <b>pedido <%= "%05d" % @pedido.id %></b></h2>
+<p style="color: #000">
+	<code id="cupon">
+		<%= montaExtrato(@pedido) %>
+    </code>
+</p>
+<p>___________________________</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>Esperamos você, em breve, fazendo mais compras conosco.</p>
+<br />
+<h2>RM Gráfica Rápida</h2>
+<br /> <br />
+  </body>
+</html>

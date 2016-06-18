@@ -1,0 +1,41 @@
+<div id="mainM">
+	<div class="block">
+		
+			<p>
+			  	<%= @adm_produto.descricao %><br />
+			</p><br />
+			<p>
+				<span style="font-size: xx-large; color: #FFFFFF">
+				<%= number_to_currency(@adm_produto.valor_max, :separator => ",", :delimiter => ".", :unit => "R$ ") %>
+				</span> (cada unidade)<br /><br />
+			</p><br />
+			<%= form_for(@adm_item_pedido) do |f| %>
+				<%= f.hidden_field :pedido_id, :value => params[:idPedido] %>
+				<%= f.hidden_field :produto_id, :value => @adm_produto.id %>
+				<%= f.hidden_field :valor_unitario, :value => @adm_produto.valor_max %>
+				<%= f.hidden_field :status_id, :value => Status.where(["codigo = 'IP-0' and area_id = ?", Area.select('id').where(["codigo = 5"]).first]).first.id %>
+				<div class="field"><p>
+				    <%= f.label :quantidade, 'Quantidade' %><br />
+				    <%= f.text_field :quantidade, :size => 30 %></p>
+				</div>
+				<div class="field"><p>
+				    <%= f.label :obs, 'Observações' %><br />
+				    <%= f.text_area :obs, :size => 30 %></p>
+				</div>
+				<div class="actions"><p>
+				    <%= f.submit :value => " Salvar alterações do pproduto ", :class => "button" %> &nbsp &nbsp 
+					<input class="button" type="button" onclick="redirecionarURL('<%= adm_pedido_path(params[:idPedido]) %>')" value=" Voltar ao pedido " />
+					</p>
+				</div>
+			<% end %>
+		
+	</div>
+<!-- /main -->	
+</div>
+<div id="sidebarM">
+	<div class="sidemenu">
+		<h3>Imagens</h3>
+		<br />
+		<img width="160" height="160" style="vertical-align:top; margin: 0px 0px 0px 20px; padding: 0 0 0 0;" src="/temp/<%= @adm_produto.arquivo[0].nome %>" />
+	</div>							
+</div>

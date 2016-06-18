@@ -1,0 +1,25 @@
+<!-- CONTENT -->
+	<div id="content"><div class="inner_copy"><div class="inner_copy">&nbsp;</div></div>
+		<ul class="box-list">
+			<% @publico_produtos_exibicao.each do |p|%>
+			<li class="last">
+				<div class="box">
+					<div class="border-bot">
+						<div class="right-bot-corner">
+							<div class="left-bot-corner">
+								<div class="inner">
+									<div class="box1">
+										<div class="inner">
+											<h4><a href="<%= produto_path(p) %>"><b><%= p.nome%></b></a> </h4>
+											<p><%= p.descricao.length > 300 ? p.descricao[0,300].html_safe + '...' : p.descricao.html_safe %> <a href="<%= produto_path(p) %>"><img src="/images/arrow.gif" alt="Leia mais..." /></a></p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</li>
+			<% end %>
+		</ul>
+	</div>

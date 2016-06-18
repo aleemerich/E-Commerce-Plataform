@@ -1,0 +1,67 @@
+<!-- CONTENT -->
+	<div id="content"><div class="inner_copy"><div class="inner_copy">&nbsp;</div></div>
+		<ul class="box-list">
+			<% @publico_produtos_exibicao.each do |p|%>
+			<li class="last">
+				<div class="box">
+					<div class="border-bot">
+						<div class="right-bot-corner">
+							<div class="left-bot-corner">
+								<div class="inner">
+									<div class="box1">
+										<div class="inner">
+											<h4><a href="<%= produto_path(p) %>"><b><%= p.nome%></b></a></h4>
+											<!-- <p><%= p.descricao.length > 200 ? p.descricao[0,200].html_safe + '...' : p.descricao.html_safe %> <a href="<%= produto_path(p) %>"><img src="images/arrow.gif" alt="Leia mais..." /></a></p>-->
+											<p>Leia mais... <a href="<%= produto_path(p) %>"><img src="/images/arrow.gif" alt="Leia mais..." /></a></p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</li>
+			<% end %>
+		</ul>
+		<div class="indent">
+			<div class="wrapper">
+				<div class="col-1">
+					<h3><b>Bem vindos</b> a RM Gráfica Rápida</h3>
+					<p>Estamos felizes em recebê-lo em nosso espaço, especialmente preparado para você. 
+						Oferecemos diversos serviços de gráfica rápida em nossa loja tais como: impressão, 
+						cópias, plastificações, encadernações, revelação de filmes, 
+						impressões de fotos digitais, transformação de VHS para DVD, cartões de visita, 
+						carimbos, flyers e muito mais.</p>
+					<div class="img-box1"><img src="images/1page-img.jpg" alt="" />
+						<p class="p0">Estamos inaugurando agora nossa <b>versão ON-LINE com a possibilidade de 
+							pedidos de impressões no formato A3 e A4</b>. Para que você possa fazer seu pedido, 
+							basta <a href="/clientes/new">fazer seu cadastro</a>. Em seguida você poderá solicitar impressões no formato 
+							A3 e A4 diretamente do conforto de sua casa ou escritório.</p>
+				  </div>
+					<p>Gradativamente iremos migrar nossos serviços para esse local, contudo queremos saber de você 
+						o que gostaria de ver em nosso site. Envie e-mail para 
+						<a href="mailto:contato@rmgraficarapida.com.br">contato@rmgraficarapida.com.br</a> dando sua opinião.
+						Você também pode enviar críticas ou sugestões para que possamos deixar esse espaço cada vez melhor 
+						para você! Afinal esse sempre foi nosso objetivo: <b>recebê-lo bem!</b></p>
+					<p>
+						Nossas vendas são intermediadas pelo <b>PAG SEGURO</b> para que você tenha toda segurança na hora do pagamento
+						e também a garantia de entrega (ou seu dinheiro devolvido). O Pag Seguro fornece várias formas de pagamento através
+						dos principais bancos do mercado.
+						<!--<center>
+							<a href='https://pagseguro.uol.com.br' target='_blank'><img alt='Logotipos de meios de pagamento do PagSeguro' src='/images/pag_seguro.png' border='0'></a>
+						</center>-->
+					</p>
+					<p class="p0">
+						<b>RM Gráfica Rápida</b>, procurando sempre estar perto de você! Se preferir, visite-nos pessoalmente na <b>Rua Guaraú, 92 - São Paulo</b>,
+						próximo a estação do metrô Praça da Árvore (<a href="http://maps.google.com/maps?q=Rua Guaraú, 92, São Paulo, SP&z=17" target="_blank">clique aqui para ver no mapa</a>) 
+						ou entre em contato pelos telefones <b>(11) 5589.1512 ou <br />(11) 5583.2651</b>.
+					</p>
+					
+				</div>
+				<div class="col-2">
+					<%= render :partial => "layouts/lancamentos", :locals => {:produtos => @publico_produtos_recentes} %>
+					<%= render :partial => "layouts/login" %>
+				</div>
+			</div>
+		</div>
+	</div>

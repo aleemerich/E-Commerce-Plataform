@@ -1,0 +1,46 @@
+<!-- CONTENT -->
+	<div id="content"><div class="inner_copy"><div class="inner_copy">&nbsp;</div></div>
+		<div class="box">
+			<div class="border-bot">
+				<div class="right-bot-corner">
+					<div class="left-bot-corner">
+						<div class="inner">
+							<div class="box1 alt">
+								<div class="inner">
+									<h3><b>Atualize</b> seus dados</h3>
+									<%= form_for(@cliente, :url => '/clientes/', :method => :put, :html => {:id => 'Xcontacts-form'}) do |f| %>
+										<fieldset>
+										   <div class="field"><p>
+										    <label>Nome Completo</label>: &nbsp;
+										    <%= f.text_field :nome_completo, :size => 63 %></p>
+										  </div>
+										  <div class="field"><p>
+										    <label>CPF/CNPJ</label>: &nbsp;
+										    <%= f.text_field :cpf_cnpj, :size => 63 %></p>
+										  </div>
+										  <div class="field"><p>
+										    <label>Data de nascimento/abertura da empresa</label>: &nbsp; &nbsp;
+										    <%= f.date_select :dt_nasc_abertura, :order => [:day, :month, :year], :use_month_names => ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'], :start_year => 1900, :end_year => Time.now.year %></p>
+										  </div>
+										  <div class="field"><p>
+										    <label>E-mail</label>: &nbsp;
+										    <%= f.text_field :email, :size => 50 %></p>
+										  </div>
+										  <div class="field"><p>
+										    <label>Senha</label>: &nbsp;
+										    <%= f.password_field :senha %></p>
+										  </div><br /><br />
+										  <div style="text-align:left">
+										    <a href="#" onclick="redirecionarURL('/clientes')" class="link1"><em><b>VOLTAR</b></em></a> <br /> <br /> <br />
+										    <a href="#" onclick="document.getElementById('Xcontacts-form').submit()" class="link1"><em><b>ATUALIZAR!</b></em></a> 
+										  </div>
+										</fieldset>
+									<% end %>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
